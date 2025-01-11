@@ -10,7 +10,6 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -40,12 +39,13 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    /* Path follower */
+    private final SendableChooser<Command> autoChooser;
+
 
     public RobotContainer() {
-        // autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
-        // SmartDashboard.putData("Auto Mode", autoChooser);
-
-
+        autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
+        SmartDashboard.putData("Auto Mode", autoChooser);
 
         configureBindings();
     }
@@ -61,7 +61,7 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
-        //TODO; "Ask Drive Team about bindings"
+        // generated buttons that drivers will probably never use
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
@@ -74,13 +74,13 @@ public class RobotContainer {
         characterizationJoystick.povUp().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // reset the field-centric heading on start press
+        // reset the field-centric heading
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.getSelected();
     }
 }
