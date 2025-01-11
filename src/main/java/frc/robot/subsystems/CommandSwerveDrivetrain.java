@@ -112,7 +112,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     );
 
     /* The SysId routine to test */
-    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
+    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineSteer;
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -156,7 +156,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        // configureAutoBuilder();
     }
 
     /**
@@ -189,7 +188,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        // configureAutoBuilder();
     }
 
     /**
@@ -210,34 +208,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @return Command to run
      */
     
-    //  private void configureAutoBuilder() {
-    //     try {
-    //         var config = RobotConfig.fromGUISettings();
-    //         AutoBuilder.configure(
-    //             () -> getState().Pose,   // Supplier of current robot pose
-    //             this::resetPose,         // Consumer for seeding pose against auto
-    //             () -> getState().Speeds, // Supplier of current robot speeds
-    //             // Consumer of ChassisSpeeds and feedforwards to drive the robot
-    //             (speeds, feedforwards) -> setControl(
-    //                 m_pathApplyRobotSpeeds.withSpeeds(speeds)
-    //                     .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-    //                     .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
-    //             ),
-    //             new PPHolonomicDriveController(
-    //                 // PID constants for translation
-    //                 new PIDConstants(10, 0, 0),
-    //                 // PID constants for rotation
-    //                 new PIDConstants(7, 0, 0)
-    //             ),
-    //             config,
-    //             // Assume the path needs to be flipped for Red vs Blue, this is normally the case
-    //             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-    //             this // Subsystem for requirements
-    //         );
-    //     } catch (Exception ex) {
-    //         DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
-    //     }
-    // }
+
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.quasistatic(direction);

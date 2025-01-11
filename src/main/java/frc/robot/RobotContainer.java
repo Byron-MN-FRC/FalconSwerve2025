@@ -40,8 +40,6 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-/* Path follower */
-    // private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
         // autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
@@ -75,18 +73,14 @@ public class RobotContainer {
         characterizationJoystick.a().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         characterizationJoystick.povUp().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        //Buttons for signal logging.
-        //characterizationJoystick.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
 
-
-        // reset the field-centric heading on left bumper press
+        // reset the field-centric heading on start press
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        // return autoChooser.getSelected();
         return null;
     }
 }
