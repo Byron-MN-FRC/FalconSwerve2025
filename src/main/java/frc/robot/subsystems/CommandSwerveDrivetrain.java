@@ -18,6 +18,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -51,6 +52,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+    private AnalogOutput hourGlAnalog = new AnalogOutput(0);
+
+        //Hourmeter code. Pardon my dust.
+        {if (DriverStation.isEnabled()) {
+            startMonitoring();
+        } else {
+            stopMonitoring();
+        }}
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -276,6 +285,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        if (DriverStation.isEnabled()) {
+            startMonitoring();
+        } else {
+            stopMonitoring();
+        }
     }
 
     private void startSimThread() {
@@ -292,4 +307,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
+    public void startMonitoring() {
+        hourGlAnalog.setVoltage(5);
+
+    }
+
+    public void stopMonitoring() {
+        hourGlAnalog.setVoltage(0);
+    } 
 }
