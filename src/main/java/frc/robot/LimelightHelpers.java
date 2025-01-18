@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.TimestampedDoubleArray;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -581,6 +582,7 @@ public class LimelightHelpers {
      */
     static boolean profileJSON = false;
 
+    //TODO see if this needs to be changed to Constants.limelightname instead of "limelight"
     static final String sanitizeName(String name) {
         if (name == "" || name == null) {
             return "limelight";
@@ -671,7 +673,6 @@ public class LimelightHelpers {
 
     private static PoseEstimate getBotPoseEstimate(String limelightName, String entryName, boolean isMegaTag2) {
         DoubleArrayEntry poseEntry = LimelightHelpers.getLimelightDoubleArrayEntry(limelightName, entryName);
-        
         TimestampedDoubleArray tsValue = poseEntry.getAtomic();
         double[] poseArray = tsValue.value;
         long timestamp = tsValue.timestamp;
