@@ -12,6 +12,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +23,8 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
+ //   private static RobotContainer m_robotContainer = new RobotContainer();
+
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -42,14 +45,26 @@ public class RobotContainer {
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
-
+    public Field2d field = new Field2d();
 
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        Field2d field = new Field2d();
+        field = new Field2d();
         SmartDashboard.putData("field", field);
+
+        // PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+        //     field.setRobotPose(pose);
+        // });
+        
+        // PathPlannerLogging.setLogTargetPoseCallback((pose) ->  {
+        //     field.getObject("target pose").setPose(pose);
+        // });
+
+        // PathPlannerLogging.setLogActivePathCallback((poses) -> {
+        //     field.getObject("path").setPoses(poses);
+        // });
         
         configureBindings();
     }
@@ -87,4 +102,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
+
 }
