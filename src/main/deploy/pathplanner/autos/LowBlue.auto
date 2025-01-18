@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LowBlueReef"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.7
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LowBlueReef2Processor"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
