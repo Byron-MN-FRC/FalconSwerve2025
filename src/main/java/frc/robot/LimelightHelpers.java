@@ -582,7 +582,6 @@ public class LimelightHelpers {
      */
     static boolean profileJSON = false;
 
-    //TODO see if this needs to be changed to Constants.limelightname instead of "limelight"
     static final String sanitizeName(String name) {
         if (name == "" || name == null) {
             return "limelight";

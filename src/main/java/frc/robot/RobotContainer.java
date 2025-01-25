@@ -12,23 +12,29 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.DriveToPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double percentSlow = 1;
 
     /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -40,7 +46,12 @@ public class RobotContainer {
 
     private final CommandXboxController characterizationJoystick = new CommandXboxController(1);
 
+
+
+
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    public final Vision m_Vision = new Vision();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -74,11 +85,14 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * percentSlow) // Drive forward with negative Y (forward)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed * percentSlow) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate * percentSlow) // Drive counterclockwise with negative X (left)
             )
         );
+
+        /* Driver Buttons */
+
         // generated buttons that drivers will probably never use
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
@@ -94,12 +108,29 @@ public class RobotContainer {
 
         // reset the field-centric heading
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
+        // joystick.back().toggleOnTrue(new InstantCommand(() -> drivetrain.rotateOpPerspective()));
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        // slow mode
+        joystick.back().onTrue(new InstantCommand(() -> slow()));
+
+        //drive to position
+        joystick.b().whileTrue(
+            new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
+    
     }
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+    }
+
+    private void slow() {
+        if (percentSlow == 1) {
+            percentSlow = Constants.percentSlow;
+        } else {
+            percentSlow = 1;
+        }
     }
 
 }

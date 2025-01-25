@@ -295,4 +295,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
+    // TODO fix
+    // public void rotateOpPerspective() {
+    //     if ();
+    // }
+
 }
