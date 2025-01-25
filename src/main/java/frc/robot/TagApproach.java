@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class TagApproach {
     enum gameTarget {
-        Amp,
-        Speaker,
-        Source, 
-        Stage
+        Reef,
+        Barge,
+        CoralStation, 
+        Processor
     }
     
     private int _fiduciaryNumber;
@@ -19,6 +19,12 @@ public class TagApproach {
     public TagApproach(int id, Alliance alliance, gameTarget targetType, 
         Pose2d desiredPose) {
         _fiduciaryNumber = id;
+        _alliance = alliance;
+        _targetType = targetType;
+        _desiredPose = desiredPose;
+    }
+
+    public TagApproach(Alliance alliance, gameTarget targetType, Pose2d desiredPose){
         _alliance = alliance;
         _targetType = targetType;
         _desiredPose = desiredPose;

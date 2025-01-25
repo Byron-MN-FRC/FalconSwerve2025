@@ -5,20 +5,18 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.Robot;
 import frc.robot.TagApproaches;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import pabeles.concurrency.IntOperatorTask.Max;
 /**
  *
  */
@@ -28,8 +26,7 @@ public class DriveToPosition extends Command {
     private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
 
-    private String _limelightName = ""; // use from vision TODO
-    public AprilTagFieldLayout FieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    private String _limelightName = Constants.limeLightName;
 /*old up */
     private final CommandSwerveDrivetrain drivetrain;
     /* old down */
@@ -67,9 +64,11 @@ public class DriveToPosition extends Command {
         // Verify that see a valid target for aliance and set current robot pose based on it.
           if (LimelightHelpers.getTV("")) {
             int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
-            if ((fidID >= 0) && (fidID <= 16)) {
+            if ((fidID >= 0) && (fidID <= 22)) {
                 lastTarget = fidID;
-                goalPose = TagApproaches.getInstance().DesiredRobotPos(lastTarget);
+                
+                // goalPose = TagApproaches.getInstance().DesiredRobotPos(lastTarget);
+                goalPose = TagApproaches.getInstance().DesiredRobotPosN(22);
 
                 SmartDashboard.putString("goal pose", goalPose.toString());
             }
@@ -85,9 +84,9 @@ public class DriveToPosition extends Command {
     @Override
     public void execute() {
 
-        // if (lastTarget == 0) {
-        //     // drivetrain.stop();
-        // } else {
+        if (lastTarget == 0) {
+            // drivetrain.stop();
+        } else {
 
             // Drive
             xController.setGoal(goalPose.getX());
@@ -116,7 +115,7 @@ public class DriveToPosition extends Command {
                 .withVelocityY(ySpeed * MaxSpeed)
                 .withRotationalRate(omegaSpeed * MaxAngularRate)
         );
-
+        }
     }
 
     // Called once the command ends or is interrupted.
