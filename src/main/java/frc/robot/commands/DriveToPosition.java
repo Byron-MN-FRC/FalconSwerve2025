@@ -47,75 +47,92 @@ public class DriveToPosition extends Command {
     
     public DriveToPosition(CommandSwerveDrivetrain subsystem) {
         drivetrain = subsystem;
-        /* old down */
+
         xController.setTolerance(0.05);
         yController.setTolerance(0.05);
         omegaController.setTolerance(Units.degreesToRadians(2));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        /* old up */
+
         addRequirements(drivetrain);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        //ensure the active pipeline can process april tags
+        // if (LimelightHelpers.getCurrentPipelineType(_limelightName) != "pipe_fiducial") {
+        //     LimelightHelpers.setPipelineIndex(_limelightName, Constants.aprilPipe);
+        // }
+
         // // Set position of camera based on target seen 
         lastTarget = 0;
         // Verify that see a valid target for aliance and set current robot pose based on it.
-          if (LimelightHelpers.getTV("")) {
-            int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
-            if ((fidID >= 0) && (fidID <= 22)) {
-                lastTarget = fidID;
+        //   if (LimelightHelpers.getTV("")) {
+        //     int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
+        //     if ((fidID >= 0) && (fidID <= 22)) {
+        //         lastTarget = fidID;
                 
-                // goalPose = TagApproaches.getInstance().DesiredRobotPos(lastTarget);
-                goalPose = TagApproaches.getInstance().DesiredRobotPosN(22);
+        //         // goalPose = TagApproaches.getInstance().DesiredRobotPos(10);
 
-                SmartDashboard.putString("goal pose", goalPose.toString());
-            }
-        }
+        //         SmartDashboard.putString("goal pose", goalPose.toString());
+        //     }
+        // }
+                        
+        goalPose = TagApproaches.getInstance().DesiredRobotPos(10);
 
-        omegaController.reset(drivetrain.getState().Pose.getRotation().getRadians());
-        yController.reset(drivetrain.getState().Pose.getY());
-        xController.reset(drivetrain.getState().Pose.getX());
+        // SmartDashboard.putString("goal pose", goalPose.toString());
 
+        // omegaController.reset(drivetrain.getState().Pose.getRotation().getRadians());
+        // yController.reset(drivetrain.getState().Pose.getY());
+        // xController.reset(drivetrain.getState().Pose.getX());
+        System.out.println("yo this works");
     }
 
     // // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
 
-        if (lastTarget == 0) {
-            // drivetrain.stop();
-        } else {
+        //     // Drive
+        //     xController.setGoal(goalPose.getX());
+        //     yController.setGoal(goalPose.getY());
+        //     omegaController.setGoal(goalPose.getRotation().getRadians());
 
-            // Drive
-            xController.setGoal(goalPose.getX());
-            yController.setGoal(goalPose.getY());
-            omegaController.setGoal(goalPose.getRotation().getRadians());
+        //     // Drive to the target
+        //     var xSpeed = xController.calculate(drivetrain.getState().Pose.getX());
+        //     if (xController.atGoal()) {
+        //         xSpeed = 0;
+        //     }
 
-            // Drive to the target
-            var xSpeed = xController.calculate(drivetrain.getState().Pose.getX());
-            if (xController.atGoal()) {
-                xSpeed = 0;
-            }
+        //     var ySpeed = yController.calculate(drivetrain.getState().Pose.getY());
+        //     if (yController.atGoal()) {
+        //         ySpeed = 0;
+        //     }
 
-            var ySpeed = yController.calculate(drivetrain.getState().Pose.getY());
-            if (yController.atGoal()) {
-                ySpeed = 0;
-            }
-
-            var omegaSpeed = omegaController.calculate(drivetrain.getState().Pose.getRotation().getRadians());
-            if (omegaController.atGoal()) {
-                omegaSpeed = 0;
-            }
+        //     var omegaSpeed = omegaController.calculate(drivetrain.getState().Pose.getRotation().getRadians());
+        //     if (omegaController.atGoal()) {
+        //         omegaSpeed = 0;
+        //     }
  
-    /*break old ^ */
-        drivetrain.setControl(
-            Robot.getInstance().drive.withVelocityX(xSpeed * MaxSpeed) // Drive forward with negative Y (forward)
-                .withVelocityY(ySpeed * MaxSpeed)
-                .withRotationalRate(omegaSpeed * MaxAngularRate)
-        );
-        }
+        // drivetrain.setControl(
+        //     Robot.getInstance().drive
+        //         .withVelocityX(xSpeed * MaxSpeed)
+        //         .withVelocityY(ySpeed * MaxSpeed)
+        //         .withRotationalRate(omegaSpeed * MaxAngularRate)
+        // );
+
+        // // System.out.println("Last Taget: " + lastTarget);
+        // // System.out.println();
+
+        // // System.out.println("Goal Pose X: " + goalPose.getX());
+        // // System.out.println("Goal Pose Y: " + goalPose.getY());
+        // // System.out.println("Goal Pose R: " + goalPose.getRotation());
+        // // System.out.println();
+        
+        // System.out.println("X Speed: " + xSpeed);
+        // System.out.println("Y Speed: " + ySpeed);
+        // System.out.println("R Speed: " + omegaSpeed);
+        // System.out.println();
+        System.out.println("this also works");
     }
 
     // Called once the command ends or is interrupted.

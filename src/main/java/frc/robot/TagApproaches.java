@@ -17,8 +17,10 @@ public class TagApproaches {
         return _TagApproaches;
     }
 
-    // distance in meters from camera lens to front edge of bumper.
-    public final double cameraOffset = 15;
+    //TODO marked for removal because it is incorporated into the limelighthelpers code
+    // // distance in meters from camera lens to front edge of bumper.
+    // public final double cameraOffset = 15;
+
     private double rw = 0.451; // Robot circumference in meters
     Pose2d pose;
 
@@ -51,9 +53,9 @@ public class TagApproaches {
         pose = calcNewPose(8, 0.800, -0.50, -58);
         tagArray[7] = new TagApproach(8, Alliance.Red, gameTarget.Reef, pose);
 
-        poseOffsetx = (FieldLayout.getTagPose(10).get().getX() - FieldLayout.getTagPose(9).get().getX()) / 2 + 0.22;
-        poseOffsety = (FieldLayout.getTagPose(10).get().getY() - FieldLayout.getTagPose(9).get().getY()) / 2 + 0.175;
-        pose = calcNewPose(9, poseOffsetx, poseOffsety, 60);
+        // poseOffsetx = (FieldLayout.getTagPose(10).get().getX() - FieldLayout.getTagPose(9).get().getX()) / 2 + 0.22;
+        // poseOffsety = (FieldLayout.getTagPose(10).get().getY() - FieldLayout.getTagPose(9).get().getY()) / 2 + 0.175;
+        pose = calcNewPose(9, 0, poseOffsety, 0);
         tagArray[8] = new TagApproach(9, Alliance.Red, gameTarget.Reef, pose);
         tagArray[9] = new TagApproach(10, Alliance.Red, gameTarget.Reef, pose);
 
@@ -96,7 +98,7 @@ public class TagApproaches {
         // numbers past this point are not tags, but rather user specifified positions
 
         pose = calcNewPose(4, 7, 0);
-        tagArray[22] = new TagApproach(Alliance.Red, gameTarget.Reef, pose);
+        tagArray[22] = new TagApproach("testPose1", Alliance.Red, gameTarget.Reef, pose);
     }
 
     private Pose2d calcNewPose(int id, double arbX, double arbY, double arbAngle) {
@@ -124,15 +126,24 @@ public class TagApproaches {
     }
 
     public Pose2d DesiredRobotPos(int tagID) {
-        return tagArray[tagID - 1].DesiredPos();
-    }
-
-    public Pose2d DesiredRobotPosN(int arrayLocation) {
-        return tagArray[arrayLocation].DesiredPos();
+        int indexInArray = tagID - 1;
+        // Alliance alliance = Robot.getInstance().m_Vision.MyAlliance();
+        // if (indexInArray > 21 && alliance != null && alliance != tagArray[indexInArray].TagAlliance()) {
+            
+        //    return RotatePose2d(indexInArray);
+                    
+        // }
+        
+        return tagArray[indexInArray].DesiredPos();
     }
 
     public Pose2d TagFieldPose2d(int tagID) {
         return FieldLayout.getTagPose(tagID).get().toPose2d();
+    }
+
+    public Pose2d RotatePose2d(int arrayIndex) {
+        Pose2d oppOrigin = new Pose2d(FieldLayout.getFieldLength(), FieldLayout.getFieldWidth(), new Rotation2d(Math.PI));
+        return tagArray[arrayIndex].DesiredPos().relativeTo(oppOrigin);
     }
 
 }

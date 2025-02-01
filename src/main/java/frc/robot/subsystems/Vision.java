@@ -79,7 +79,7 @@ public class Vision extends SubsystemBase {
     //     }
     // }
 
-    private Alliance MyAlliance() {
+    public Alliance MyAlliance() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
             return ally.get() == Alliance.Red ? Alliance.Red : Alliance.Blue;
@@ -111,46 +111,6 @@ public class Vision extends SubsystemBase {
     //     // return this.currentOptimalPose;
     // }
 
-    // public void UpdatePoseEstimatorWithVisionBotPose(SwerveDrivePoseEstimator swervePoseEstimator) {
-    //     LimelightHelpers.PoseEstimate estimatedPose = LimelightHelpers.getBotPoseEstimate_wpiBlue(_limelightName);
- 
-    //     if (estimatedPose.pose.getX() == 0.0) {
-    //         return;
-    //     }
-
-    //     int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
-
-    //     if ((fidID >= 0) && (fidID <= 15)) {
-    //         Pose2d pose = _tagApproches.TagFieldPose2d(fidID);
-
-    //         // calculating distance from robot to target
-    //         Translation2d trans1 = new Translation2d(estimatedPose.pose.getX(), estimatedPose.pose.getY());
-    //         Translation2d trans2 = new Translation2d(pose.getX(), pose.getY());
-    //         double poseDifference = trans1.getDistance(trans2);
-
-    //         // take the estimated robot pose and add PI radians to say the camera is on the back of the robot.
-    //         Pose2d robotPose  = new Pose2d(
-    //             estimatedPose.pose.getX(),
-    //             estimatedPose.pose.getY(),
-    //             new Rotation2d(estimatedPose.pose.getRotation().getRadians() + Math.PI)
-    //         );
-    //         // offset from cameral to middle of robot
-    //         robotPose = robotPose.transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(10.5),0),new Rotation2d()));
-       
- 
-    //         getVisionCalculatedRobotPose = robotPose;    
-
-
-    //         if (poseDifference < 1.5) {
-    //             if (swervePoseEstimator != null) {
-    //                 swervePoseEstimator.addVisionMeasurement(robotPose,
-    //                         Timer.getFPGATimestamp() - estimatedPose.latency);
-                    
-    //            }
-    //            RobotContainer.getInstance().s_Swerve.setPose(robotPose);
-    //         }
-    //     }
-    // }
 
     // returns a blank pose if no tags are available to return a pose. Otherwise
     // returns where the camera is

@@ -15,16 +15,20 @@ public class TagApproach {
     private Alliance _alliance;
     private gameTarget _targetType;
     private Pose2d _desiredPose;
+    private String _descriptor;
     
     public TagApproach(int id, Alliance alliance, gameTarget targetType, 
         Pose2d desiredPose) {
         _fiduciaryNumber = id;
+        _descriptor = "";
         _alliance = alliance;
         _targetType = targetType;
         _desiredPose = desiredPose;
     }
 
-    public TagApproach(Alliance alliance, gameTarget targetType, Pose2d desiredPose){
+    public TagApproach(String descriptor, Alliance alliance, gameTarget targetType, Pose2d desiredPose){
+        _fiduciaryNumber = 0;
+        _descriptor = descriptor;
         _alliance = alliance;
         _targetType = targetType;
         _desiredPose = desiredPose;
@@ -44,6 +48,10 @@ public class TagApproach {
     
     public Pose2d DesiredPos(){
         return _desiredPose;
+    }
+
+    public String Descriptor() {
+        return _descriptor;
     }
 
 }
