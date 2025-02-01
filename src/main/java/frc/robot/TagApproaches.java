@@ -35,16 +35,16 @@ public class TagApproaches {
         tagArray[0] = new TagApproach(1, Alliance.Red, gameTarget.CoralStation, pose);
         tagArray[1] = new TagApproach(2, Alliance.Red, gameTarget.CoralStation, pose);
         
-        pose = calcNewPose(3, -0.79, -0.51, 240);
+        pose = calcNewPose(3, 0, 0, 180);
         tagArray[2] = new TagApproach(3, Alliance.Red, gameTarget.Processor, pose);
 
-        pose = calcNewPose(4, -0.914 - rw, -0.15, 180);
+        pose = calcNewPose(4, 0, 0, 180);
         tagArray[3] = new TagApproach(4, Alliance.Blue, gameTarget.Barge, pose);
 
-        pose = calcNewPose(5, 0, -rw, -90);
+        pose = calcNewPose(5, 0, 0, -90);
         tagArray[4] = new TagApproach(5, Alliance.Red, gameTarget.Barge, pose);
 
-        pose = calcNewPose(6, 0.0, -rw, -90);
+        pose = calcNewPose(6, 0.0, 0, 0);
         tagArray[5] = new TagApproach(6, Alliance.Red, gameTarget.Reef, pose);
 
         pose = calcNewPose(7, 0.914 + rw, 0, 0);
@@ -55,8 +55,10 @@ public class TagApproaches {
 
         // poseOffsetx = (FieldLayout.getTagPose(10).get().getX() - FieldLayout.getTagPose(9).get().getX()) / 2 + 0.22;
         // poseOffsety = (FieldLayout.getTagPose(10).get().getY() - FieldLayout.getTagPose(9).get().getY()) / 2 + 0.175;
-        pose = calcNewPose(9, 0, poseOffsety, 0);
+        pose = calcNewPose(9, 0, 0, 0);
         tagArray[8] = new TagApproach(9, Alliance.Red, gameTarget.Reef, pose);
+        
+        pose = calcNewPose(10, 0, 0, 0);
         tagArray[9] = new TagApproach(10, Alliance.Red, gameTarget.Reef, pose);
 
         pose = calcNewPose(11, 0.16, -0.16, 120);
@@ -135,6 +137,7 @@ public class TagApproaches {
         // }
         
         return tagArray[indexInArray].DesiredPos();
+        // return new Pose2d();
     }
 
     public Pose2d TagFieldPose2d(int tagID) {
