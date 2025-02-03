@@ -13,20 +13,23 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.Climb;
 import frc.robot.commands.GrabAlgae;
 import frc.robot.commands.GrabCoral;
 import frc.robot.commands.PlaceAlgae;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
+import frc.robot.commands.Store;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -35,7 +38,6 @@ import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
-    public static RobotContainer m_robotContainer = new RobotContainer();
     // Subsystems
         public final Shoulder m_shoulder = new Shoulder();
         public final Wrist m_wrist = new Wrist();
@@ -55,7 +57,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    public final CommandXboxController joystick = new CommandXboxController(0);
     // private final CommandXboxController characterizationJoystick = new CommandXboxController(2);
     private final XboxController accessory = new XboxController(1);
 
@@ -68,6 +70,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
+        // selector spots
         SmartDashboard.putBoolean("0-0", true);
         SmartDashboard.putBoolean("1-0", false);
         SmartDashboard.putBoolean("2-0", false);
@@ -77,6 +80,11 @@ public class RobotContainer {
         SmartDashboard.putBoolean("2-1", false);
         SmartDashboard.putBoolean("3-1", false);
         Constants.Selector.PlacementSelector.initializeTab();
+
+        // sliders for tuning positions? would need to set the motors to these speeds
+        // Shuffleboard.getTab("REEFSCAPE").add("shoulder", shouldermotor).withWidget(BuiltInWidgets.kNumberSlider);
+        // Shuffleboard.getTab("REEFSCAPE").add("stage 1", elevatorStage1).withWidget(BuiltInWidgets.kNumberSlider);
+        // Shuffleboard.getTab("REEFSCAPE").add("stage 2", elevatorStage2).withWidget(BuiltInWidgets.kNumberSlider);
 
         configureBindings();
     }
@@ -116,6 +124,8 @@ public class RobotContainer {
         joystick.leftTrigger(.5).whileTrue(new PlaceAlgae(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         joystick.leftBumper().onTrue(new GrabAlgae(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
+        // slow button
+        joystick.y().onTrue(new InstantCommand(() -> slow()));
         // reset the field-centric heading
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
@@ -134,7 +144,10 @@ public class RobotContainer {
         pOVButtonUp.onTrue(new SelectPlacement(0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     
         final JoystickButton btnClimb = new JoystickButton(accessory, XboxController.Button.kStart.value);        
-        btnClimb.onTrue(new Climb().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        btnClimb.onTrue(new Climb(m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+        final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kBack.value);        
+        btnStore.onTrue(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
