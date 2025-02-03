@@ -44,6 +44,8 @@ public class RobotContainer {
 
     private final CommandXboxController characterizationJoystick = new CommandXboxController(1);
 
+    public int globalCurrNumSelected = 1;
+    public boolean leftNotRight = true;
 
 
 
@@ -117,6 +119,8 @@ public class RobotContainer {
             new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
     
+        joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
+        joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
     }
 
     public Command getAutonomousCommand() {
@@ -128,6 +132,24 @@ public class RobotContainer {
             percentSlow = Constants.percentSlow;
         } else {
             percentSlow = 1;
+        }
+    }
+
+    private void plus() {
+        globalCurrNumSelected++;
+    }
+
+    private void minus() {
+        if (globalCurrNumSelected > 1) {
+            globalCurrNumSelected--;
+        }
+    }
+
+    private void toggleLeftRight() {
+        if (leftNotRight == true) {
+            leftNotRight = false;
+        } else if (leftNotRight == false) {
+            leftNotRight = true;
         }
     }
 

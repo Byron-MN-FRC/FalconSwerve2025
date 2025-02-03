@@ -56,6 +56,8 @@ public class Robot extends TimedRobot {
             Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
       }
     }
+
+    SmartDashboard.putNumber("tagselected", Robot.getInstance().globalCurrNumSelected);
   }
 
   @Override

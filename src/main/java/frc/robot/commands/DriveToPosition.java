@@ -79,8 +79,8 @@ public class DriveToPosition extends Command {
                 // SmartDashboard.putString("goal pose", goalPose.toString());
             }
         }
-                        
-        goalPose = tagApproaches.DesiredRobotPos(7);
+
+        goalPose = tagApproaches.DesiredRobotPos(Robot.getInstance().globalCurrNumSelected);
 
         SmartDashboard.putString("goal pose", goalPose.toString());
 
