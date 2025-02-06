@@ -111,20 +111,6 @@ public class Vision extends SubsystemBase {
     //     // return this.currentOptimalPose;
     // }
 
-
-    // returns a blank pose if no tags are available to return a pose. Otherwise
-    // returns where the camera is
-    // relative to the field.
-    // public Pose2d GetRobotLimelightPoseEstimate() {
-    //     // LimelightHelpers.PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(_limelightName);
-    //     // if (estimate.pose.getX() == 0.0) {
-    //     //     return new Pose2d();
-    //     // } else {
-    //     //     // return new Pose2d();
-    //     //     return estimate.pose;
-    //     // }
-    // }
-
     // public boolean AllianceTargetAquired() {
         // boolean targetAquired = LimelightHelpers.getTV(_limelightName);
         // if (targetAquired) {
