@@ -1,12 +1,12 @@
 package frc.robot;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.TagApproach.gameTarget;
 
 public class TagApproaches {
@@ -160,7 +160,17 @@ public class TagApproaches {
                     
         // }
         
-        return tagArray[indexInArray].DesiredPos();
+        Pose2d goalPose = tagArray[indexInArray].DesiredPos();
+
+        if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
+            System.out.println("shifting");
+            SmartDashboard.putNumber("offsetTest", -2);
+            System.out.println(SmartDashboard.getNumber("offsetTest", -1));
+            return shiftReefAllign(goalPose, SmartDashboard.getNumber("offsetTest", -1));
+        }
+        return goalPose;
+        
+        // return tagArray[indexInArray].DesiredPos();
         // return new Pose2d();
     }
 
@@ -177,8 +187,13 @@ public class TagApproaches {
         return FieldLayout.getTagPose(id).get().getRotation().toRotation2d().getDegrees();
     }
 
-    public Pose2d tagPosToFieldRelative() {
-
+    public Pose2d shiftReefAllign(Pose2d goalBeforeShift, double robotRelativeShift) {
+        System.out.println(robotRelativeShift);
+        Rotation2d goalAngle = goalBeforeShift.getRotation();
+        Translation2d oldTranslation = goalBeforeShift.getTranslation();
+        Translation2d offsetTranslation = new Translation2d(robotRelativeShift, goalAngle.plus(Rotation2d.fromDegrees(90)));
+        Translation2d newGoalTranslation = oldTranslation.plus(offsetTranslation);
+        return new Pose2d(newGoalTranslation, goalAngle);
     }
 
 }

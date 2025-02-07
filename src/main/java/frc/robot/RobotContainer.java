@@ -42,7 +42,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    private final CommandXboxController characterizationJoystick = new CommandXboxController(1);
+    // private final CommandXboxController characterizationJoystick = new CommandXboxController(1);
 
     public int globalCurrNumSelected = 1;
     public boolean leftNotRight = true;
@@ -56,6 +56,7 @@ public class RobotContainer {
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
     public Field2d field = new Field2d();
+    public Field2d field2= new Field2d();
 
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
@@ -63,7 +64,9 @@ public class RobotContainer {
 
         field = new Field2d();
         SmartDashboard.putData("field", field);
-
+        field2 = new Field2d();
+        SmartDashboard.putData("field2", field2);
+        SmartDashboard.putNumber("offsetTest", 0);
         // PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
         //     field.setRobotPose(pose);
         // });
@@ -101,10 +104,10 @@ public class RobotContainer {
 
         // Run SysId routines.
         // Note that each routine should be run exactly once in a single log.
-        characterizationJoystick.y().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        characterizationJoystick.a().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        characterizationJoystick.povUp().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // characterizationJoystick.y().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // characterizationJoystick.a().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // characterizationJoystick.povUp().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

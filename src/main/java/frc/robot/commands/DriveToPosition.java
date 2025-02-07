@@ -22,9 +22,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
  */
 public class DriveToPosition extends Command {
 
-    // private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
-    // private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
-    private static final TrapezoidProfile.Constraints Magnitude_Constraints = new TrapezoidProfile.Constrainst(MaxV, MaxA);
+    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    // private static final TrapezoidProfile.Constraints Magnitude_Constraints = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
 
     private String _limelightName = Constants.limeLightName;
@@ -33,12 +33,12 @@ public class DriveToPosition extends Command {
     private final CommandSwerveDrivetrain drivetrain;
     /* old down */
     private Pose2d goalPose;
-    private double initialR;
-    private double angleCPoseGPose;
+    // private double initialR;
+    // private double angle;
 
-    // private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
-    // private final ProfiledPIDController yController = new ProfiledPIDController(2.5, 0, 0, Y_CONSTRAINTS);
-    private final ProfiledPIDController magnitudeController = new ProfiledPIDController(P, I, D, Magnitude_Constraints);
+    private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
+    private final ProfiledPIDController yController = new ProfiledPIDController(2.5, 0, 0, Y_CONSTRAINTS);
+    // private final ProfiledPIDController magnitudeController = new ProfiledPIDController(2.5, 0, 0, Magnitude_Constraints);
     private final ProfiledPIDController omegaController = new ProfiledPIDController(3, 0, .1, OMEGA_CONSTRAINTS);
 
     private int lastTarget;
@@ -57,7 +57,7 @@ public class DriveToPosition extends Command {
         yController.setTolerance(0.05);
         omegaController.setTolerance(Units.degreesToRadians(2));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        magnitudeController.setTolerance(0.05);
+        // magnitudeController.setTolerance(0.05);
 
         addRequirements(drivetrain);
     }
@@ -85,16 +85,20 @@ public class DriveToPosition extends Command {
         }
 
         goalPose = tagApproaches.DesiredRobotPos(Robot.getInstance().globalCurrNumSelected);
-        
+        // initialR = goalPose.getTranslation().getDistance(drivetrain.getState().Pose.getTranslation());
+
+
+
         SmartDashboard.putString("goal pose", goalPose.toString());
 
         SmartDashboard.putString("currentPose", drivetrain.getState().Pose.toString());
         omegaController.reset(drivetrain.getState().Pose.getRotation().getRadians());
         yController.reset(drivetrain.getState().Pose.getY());
         xController.reset(drivetrain.getState().Pose.getX());
-        magnitudeController.reset(drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation());
+        // magnitudeController.reset(drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation()));
         System.out.println("yo this works");
         
+        Robot.getInstance().field2.setRobotPose(goalPose);
     }
 
     // // Called every time the scheduler runs while the command is scheduled.
@@ -102,19 +106,19 @@ public class DriveToPosition extends Command {
     public void execute() {
 
             //update polar coords
-            distCPoseGPose = drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation();
-            distCxGx = drivetrain.getState().Pose.getTranslation().getX() - goalPose.getTranslation().getX();
-            if (drivetrain.getState().Pose.getY() < goalPose.getX()) {
-                angle = -1.0 * Math.acos(distCxGx / distCPoseGPose);
-            } else {
-                angle = Math.acos(distCxGx / distCPoseGPose);
-            }
+            // double currentR = drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation());
+            // double distCxGx = drivetrain.getState().Pose.getTranslation().getX() - goalPose.getTranslation().getX();
+            // if (drivetrain.getState().Pose.getY() < goalPose.getX()) {
+            //     angle = -1.0 * Math.acos(distCxGx / currentR);
+            // } else {
+            //     angle = Math.acos(distCxGx / currentR);
+            // }
                                     
             // Drive
             xController.setGoal(goalPose.getX());
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
-            magnitudeController.setGoal(0);
+            // magnitudeController.setGoal(0);
 
             // Drive to the target
             var xSpeed = xController.calculate(drivetrain.getState().Pose.getX());
@@ -132,31 +136,31 @@ public class DriveToPosition extends Command {
                 omegaSpeed = 0;
             }
 
-            var combinedSpeed = magnitudeController.calculate(distCPoseGPose);
+            // var combinedSpeed = magnitudeController.calculate(currentR);
                 
-            xSpeedFromPolar = -1 * Math.cos(angle) * combinedSpeed;
-            ySpeedFromPolar = -1 * Math.sin(angle) * combinedSpeed;
+            // double xSpeedFromPolar = -1 * Math.cos(angle) * combinedSpeed;
+            // double ySpeedFromPolar = -1 * Math.sin(angle) * combinedSpeed;
             
-            if (magnitudeController.atGoal()) {
-                xSpeedFromPolar = 0;
-                ySpeedFromPolar = 0;
-            }
+            // if (magnitudeController.atGoal()) {
+            //     xSpeedFromPolar = 0;
+            //     ySpeedFromPolar = 0;
+            // }
 
 
 
-        drivetrain.setControl(
-            Robot.getInstance().drive
-                .withVelocityX(xSpeedFromPolar * MaxSpeed)
-                .withVelocityY(ySpeedFromPolar * MaxSpeed)
-                .withRotationalRate(omegaSpeed * Max AngularRate)
-        );
-        
         // drivetrain.setControl(
         //     Robot.getInstance().drive
-        //         .withVelocityX(xSpeed * MaxSpeed)
-        //         .withVelocityY(ySpeed * MaxSpeed)
+        //         .withVelocityX(xSpeedFromPolar * MaxSpeed)
+        //         .withVelocityY(ySpeedFromPolar * MaxSpeed)
         //         .withRotationalRate(omegaSpeed * MaxAngularRate)
         // );
+        
+        drivetrain.setControl(
+            Robot.getInstance().drive
+                .withVelocityX(xSpeed * MaxSpeed)
+                .withVelocityY(ySpeed * MaxSpeed)
+                .withRotationalRate(omegaSpeed * MaxAngularRate)
+        );
 
         // System.out.println("Last Taget: " + lastTarget);
         // System.out.println();
@@ -166,11 +170,11 @@ public class DriveToPosition extends Command {
         // System.out.println("Goal Pose R: " + goalPose.getRotation());
         // System.out.println();
         
-        System.out.println("X Speed: " + xSpeed);
-        System.out.println("Y Speed: " + ySpeed);
-        System.out.println("R Speed: " + omegaSpeed);
-        System.out.println();
-        System.out.println("this also works");
+        // System.out.println("X Speed: " + xSpeed);
+        // System.out.println("Y Speed: " + ySpeed);
+        // System.out.println("R Speed: " + omegaSpeed);
+        // System.out.println();
+        // System.out.println("this also works");
     }
 
     // Called once the command ends or is interrupted.

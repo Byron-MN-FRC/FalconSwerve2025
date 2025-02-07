@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 
@@ -53,7 +54,6 @@ public class Vision extends SubsystemBase {
         // _rotateToTargetPID.setTolerance(2);
 
         LimelightHelpers.setCameraPose_RobotSpace("", 0.0275, -0.29845, 0.36195, 0, 0, 0);
-
     }
 
     private Pose2d currentOptimalPose;
