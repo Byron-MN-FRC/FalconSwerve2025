@@ -31,12 +31,11 @@ public class AutonPlaceCoral extends SequentialCommandGroup {
         // Add Commands here:
         // Also add parallel commands using the
         //
-        addCommands(
+        addCommands(              
+              new MoveElevator(Elevator).withTimeout(4),
               new MoveWrist(Wrist).withTimeout(2),           
-              Commands.parallel(
-                  new MoveShoulder(shoulder).withTimeout(3),
-                  new MoveElevator(Elevator).withTimeout(4)
-              )    
+              new MoveShoulder(shoulder).withTimeout(3),
+              new ClawDrop(Claw).withTimeout(2)
         );
         
     }

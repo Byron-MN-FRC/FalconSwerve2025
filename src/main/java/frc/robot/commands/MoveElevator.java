@@ -62,7 +62,7 @@ public class MoveElevator extends Command {
     @Override
     public void execute() {
         System.out.println("moving elevator to " + PlacementSelector.getLevel());
-        // motor.setPosition().elevatorStage2Target;
+        // motor.setPosition().elevatorStage1Target;
         // othermotor.setPosition().elevatorStage2Target;
     }
 

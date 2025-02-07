@@ -13,8 +13,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,9 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.Climb;
-import frc.robot.commands.GrabAlgae;
-import frc.robot.commands.GrabCoral;
-import frc.robot.commands.PlaceAlgae;
+import frc.robot.commands.GrabCoralHigh;
+import frc.robot.commands.GrabCoralLow;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
@@ -108,8 +105,6 @@ public class RobotContainer {
         // -joystick.getLeftX()))
         // ));
 
-        // public final Wrist m_wrist = new Wrist();
-
         // Characterization buttons
         // Note that each routine should be run exactly once in a single log.
         // characterizationJoystick.y().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
@@ -118,15 +113,10 @@ public class RobotContainer {
         // characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Operator buttons
-        joystick.rightTrigger(.5).onTrue(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        // whileTrue because it won't be with tags -- drivers will need to hold to stop selector from overriding poses
-        joystick.rightBumper().whileTrue(new GrabCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.leftTrigger(.5).whileTrue(new PlaceAlgae(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.leftBumper().onTrue(new GrabAlgae(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-        // slow button
-        joystick.y().onTrue(new InstantCommand(() -> slow()));
-        // reset the field-centric heading
+        joystick.y().onTrue(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        joystick.b().whileTrue(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        joystick.a().whileTrue(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        joystick.back().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
@@ -158,7 +148,7 @@ public class RobotContainer {
 
     private void slow() {
         if (percentSlow == 1) {
-            percentSlow = Constants.Swerve.percentSlow;
+            percentSlow = Constants.SwerveConstants.percentSlow;
         } else {
             percentSlow = 1;
         }

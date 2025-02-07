@@ -34,10 +34,9 @@ public class AutonGrabCoral extends SequentialCommandGroup {
         //
         addCommands(
               new MoveWrist(Wrist).withTimeout(2),           
-              Commands.parallel(
-                  new MoveShoulder(shoulder).withTimeout(3),
-                  new MoveElevator(Elevator).withTimeout(4)
-              )    
+              new MoveElevator(Elevator).withTimeout(4),
+              new MoveShoulder(shoulder).withTimeout(3),
+              new ClawIntake(Claw).withTimeout(2)
         );
         
     }

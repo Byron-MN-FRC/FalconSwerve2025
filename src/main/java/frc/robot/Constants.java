@@ -117,17 +117,17 @@ public class Constants {
 
             public static String getLevel(){
                 String level = blank;
-                if (currentRow == 0) level = L1;
-                else if (currentRow == 1) level = L2;
-                else if (currentRow == 2) level = L3;
-                else if (currentRow == 3) level = L4;
+                if (getCurrentRow() == 0) level = L1;
+                else if (getCurrentRow() == 1) level = L2;
+                else if (getCurrentRow() == 2) level = L3;
+                else if (getCurrentRow() == 3) level = L4;
                 return level;
             }
 
             public static String getScoringPose(){
                 String side = blank;
-                if (currentCol == 0)side = left;
-                else if (currentCol == 1) side = right;
+                if (getCurrentCol() == 0)side = left;
+                else if (getCurrentCol() == 1)side = right;
                 return side;
             }
 
@@ -136,11 +136,11 @@ public class Constants {
         
     
 
-    public static final class Swerve {
+    public static final class SwerveConstants {
         public static final double percentSlow = 0.35;
     }
 
-    public static final class Elevator {
+    public static final class ElevatorConstants {
         public static double elevatorStage1Target;
         public static double elevatorStage2Target;
         // stage 1 = 0
@@ -151,7 +151,7 @@ public class Constants {
         // stage 2 = 10
     }
 
-    public static final class Shoulder {
+    public static final class ShoulderConstants {
         public static double shoulderTarget;
         // pose for ground L1 L2 L3 processor = x
         // pose for feeder = x
@@ -160,14 +160,14 @@ public class Constants {
         // pose for feeder station = x
     }
 
-    public static final class Wrist {
+    public static final class WristConstants {
         public static double wristTarget;
         // pose upright = 0
         // pose flat = 90
         // pose ? = 180
     }
 
-    public static final class Claw {
+    public static final class ClawConstants {
     }
 
     public static final class PoseSetter {{
