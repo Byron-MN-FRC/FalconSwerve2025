@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.TagApproach.gameTarget;
 
 public class TagApproaches {
@@ -164,13 +163,10 @@ public class TagApproaches {
 
         if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
             System.out.println("shifting");
-            SmartDashboard.putNumber("offsetTest", -2);
-            System.out.println(SmartDashboard.getNumber("offsetTest", -1));
-            return shiftReefAllign(goalPose, SmartDashboard.getNumber("offsetTest", -1));
+            return shiftReefAllign(goalPose, Robot.getInstance().GLOBALOFFSET);
         }
         return goalPose;
-        
-        // return tagArray[indexInArray].DesiredPos();
+                // return tagArray[indexInArray].DesiredPos();
         // return new Pose2d();
     }
 

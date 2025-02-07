@@ -45,7 +45,7 @@ public class RobotContainer {
     // private final CommandXboxController characterizationJoystick = new CommandXboxController(1);
 
     public int globalCurrNumSelected = 1;
-    public boolean leftNotRight = true;
+    public double GLOBALOFFSET = 0.0;
 
 
 
@@ -124,6 +124,7 @@ public class RobotContainer {
     
         joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
         joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
+        joystick.x().onTrue(new InstantCommand(()-> toggleReefOffset()));
     }
 
     public Command getAutonomousCommand() {
@@ -148,12 +149,10 @@ public class RobotContainer {
         }
     }
 
-    private void toggleLeftRight() {
-        if (leftNotRight == true) {
-            leftNotRight = false;
-        } else if (leftNotRight == false) {
-            leftNotRight = true;
-        }
+    private void toggleReefOffset() {
+        if (GLOBALOFFSET == 0) GLOBALOFFSET = 0.327/2.0;
+        else if (GLOBALOFFSET == 0.327/2.0) GLOBALOFFSET = -0.327/2.0;
+        else if (GLOBALOFFSET == -0.327/2.0) GLOBALOFFSET = 0.0;  
     }
 
 }
