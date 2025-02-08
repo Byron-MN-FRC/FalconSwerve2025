@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
+  
     /*
      * This example of adding Limelight is very simple and may not be sufficient for
      * on-field use.
@@ -43,18 +43,18 @@ public class Robot extends TimedRobot {
      * of how to use vision should be tuned per-robot and to the team's
      * specification.
      */
-    if (kUseLimelight) {
-      var driveState = m_robotContainer.drivetrain.getState();
-      double headingDeg = driveState.Pose.getRotation().getDegrees();
-      double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+    // if (kUseLimelight) {
+    //   var driveState = m_robotContainer.drivetrain.getState();
+    //   double headingDeg = driveState.Pose.getRotation().getDegrees();
+    //   double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
-      LimelightHelpers.SetRobotOrientation(Constants.VisionConstants.limeLightName, headingDeg, 0, 0, 0, 0, 0);
-      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.VisionConstants.limeLightName);
-      if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
-        m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose,
-            Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
-      }
-    }
+    //   LimelightHelpers.SetRobotOrientation(Constants.VisionConstants.limeLightName, headingDeg, 0, 0, 0, 0, 0);
+    //   var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.VisionConstants.limeLightName);
+    //   if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
+    //     m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose,
+    //         Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+    //   }
+    // }
 
     SmartDashboard.putNumber("tagselected", Robot.getInstance().globalCurrNumSelected); 
   }

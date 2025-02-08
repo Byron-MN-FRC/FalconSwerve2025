@@ -11,22 +11,25 @@ import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Wrist;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Store extends Command {
+public class StorePreMatch extends Command {
   /** Creates a new Store. */
-  public Store(Shoulder shoulder, Elevator Elevator, Wrist Wrist, Claw Claw) {
-    System.out.println("storing");
-    // elevatormotor1.setPosition().0
-    // elevatormotor2.setPosition().0
-    // shouldermotor.setPosition().pose for auton stored
-    // wristmotor set 90  }
+  public StorePreMatch(Shoulder shoulder, Elevator Elevator, Wrist Wrist, Claw Claw) {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    System.out.println("storing");
+    // elevatormotor1.setPosition().0
+    // elevatormotor2.setPosition().0
+    // shouldermotor.setPosition().pose for auton stored
+    // wristmotor set?
+  }
 
   // Called once the command ends or is interrupted.
   @Override

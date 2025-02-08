@@ -48,11 +48,7 @@ public class Constants {
             private static int currentRow = 0;
             private static int currentCol = 0;
             private static GenericEntry[][] array1 = new GenericEntry[4][2];
-            public static String L1;
-            public static String L2;
-            public static String L3;
-            public static String L4;
-            public static String blank;
+            public static String level = "blank";
             public static String left;
             public static String right;
 
@@ -113,19 +109,17 @@ public class Constants {
                     System.out.println();
                 }
             }
-        
 
             public static String getLevel(){
-                String level = blank;
-                if (getCurrentRow() == 0) level = L1;
-                else if (getCurrentRow() == 1) level = L2;
-                else if (getCurrentRow() == 2) level = L3;
-                else if (getCurrentRow() == 3) level = L4;
+                if (getCurrentRow() == 0) level = "L1";
+                else if (getCurrentRow() == 1) level = "L2";
+                else if (getCurrentRow() == 2) level = "L3";
+                else if (getCurrentRow() == 3) level = "L4";
                 return level;
             }
 
             public static String getScoringPose(){
-                String side = blank;
+                String side = "blank";
                 if (getCurrentCol() == 0)side = left;
                 else if (getCurrentCol() == 1)side = right;
                 return side;
@@ -141,8 +135,6 @@ public class Constants {
     }
 
     public static final class ElevatorConstants {
-        public static double elevatorStage1Target;
-        public static double elevatorStage2Target;
         // stage 1 = 0
         // stage 1 = 5
         // stage 1 = 10
@@ -152,7 +144,6 @@ public class Constants {
     }
 
     public static final class ShoulderConstants {
-        public static double shoulderTarget;
         // pose for ground L1 L2 L3 processor = x
         // pose for feeder = x
         // pose for L4 = X
@@ -161,10 +152,8 @@ public class Constants {
     }
 
     public static final class WristConstants {
-        public static double wristTarget;
         // pose upright = 0
         // pose flat = 90
-        // pose ? = 180
     }
 
     public static final class ClawConstants {
@@ -177,47 +166,7 @@ public class Constants {
         // public static final int nPipe = 1;
     }
 
-    public static final class PoseSetter {{
-        if (Selector.PlacementSelector.getLevel() == Selector.PlacementSelector.L1){
-            // elevatorStage1Target = 'stage 1 = 0'
-            // elevatorStage2Target = 'stage 2 = 5'
-            // shoulderTarget = pos L1
-            // wristTarget = pos 0
-        }
-        else if (Selector.PlacementSelector.getLevel() == Selector.PlacementSelector.L2){
-            // elevatorStage1Target = 'stage 1 = 0'
-            // elevatorStage2Target = 'stage 2 = 10'
-            // shoulderTarget = pos L1
-            // wristTarget = pos 90
-        }
-        else if (Selector.PlacementSelector.getLevel() == Selector.PlacementSelector.L3){
-            // elevatorStage1Target = 'stage 1 = 5'
-            // elevatorStage2Target = 'stage 2 = 10'
-            // shoulderTarget = pos L1
-            // wristTarget = pos 90
-        }
-        else if (Selector.PlacementSelector.getLevel() == Selector.PlacementSelector.L4){
-            // elevatorStage1Target = 'stage 1 = 10'
-            // elevatorStage2Target = 'stage 2 = 10'
-            // shoulderTarget = pos L4
-            // wristTarget = pos 90
-        }
-        // grabbing coal from feeder station
-        else if(Robot.getInstance().joystick.rightBumper().getAsBoolean()){
-            // elevatorStage1Target = 0
-            // elevatorStage2Target = 5
-            // shoulderTarget = pos feeder
-            // wristTarget = pos 0
-        }
-        // placing algae in processor
-        else if(Robot.getInstance().joystick.leftTrigger().getAsBoolean()){
-            // elevatorStage1Target = 0
-            // elevatorStage2Target = 0
-            // shoulderTarget = pos processor
-            // wristTarget = pos 0
-        }
-    }
-  }
+    
 }
 
 

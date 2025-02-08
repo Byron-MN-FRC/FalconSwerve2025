@@ -29,6 +29,7 @@ import frc.robot.commands.GrabCoralLow;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
+import frc.robot.commands.StorePreMatch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -48,6 +49,8 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double percentSlow = 1;
+    public String goalArrangement = "blank";
+    public String currentArrangement = "blank";
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -93,6 +96,8 @@ public class RobotContainer {
         SmartDashboard.putBoolean("2-1", false);
         SmartDashboard.putBoolean("3-1", false);
         Constants.Selector.PlacementSelector.initializeTab();
+        SmartDashboard.putString("current setting", currentArrangement);
+        SmartDashboard.putString("goal setting", goalArrangement);
 
         // sliders for tuning positions? would need to set the motors to these speeds
         // Shuffleboard.getTab("REEFSCAPE").add("shoulder", shouldermotor).withWidget(BuiltInWidgets.kNumberSlider);
@@ -144,10 +149,16 @@ public class RobotContainer {
         // characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Operator buttons
-        joystick.y().onTrue(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.b().whileTrue(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.a().whileTrue(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.back().onTrue(new InstantCommand(() -> slow()));
+        joystick.leftTrigger(.5).onTrue(new InstantCommand(() -> goalArrangementPlacing())
+        .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.rightTrigger(.5).whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        
+        joystick.y().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //Op Test Buttons TODO Reassign
@@ -156,7 +167,7 @@ public class RobotContainer {
         );
     
         joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
-        joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
+        joystick.a().onTrue(new InstantCommand(() -> plus()));
         joystick.x().onTrue(new InstantCommand(()-> toggleReefOffset()));
 
 
@@ -176,8 +187,13 @@ public class RobotContainer {
         final JoystickButton btnClimb = new JoystickButton(accessory, XboxController.Button.kStart.value);        
         btnClimb.onTrue(new Climb(m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kBack.value);        
-        btnStore.onTrue(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
+        btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
+        btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -209,5 +225,47 @@ public class RobotContainer {
         if (GLOBALOFFSET == 0) GLOBALOFFSET = 0.327/2.0;
         else if (GLOBALOFFSET == 0.327/2.0) GLOBALOFFSET = -0.327/2.0;
         else if (GLOBALOFFSET == -0.327/2.0) GLOBALOFFSET = 0.0;  
+    }
+
+    private String getConfig(){
+        String positionStatement = "blank";
+        if (joystick.rightBumper().getAsBoolean()) positionStatement = "Feeder";
+        else if (joystick.back().getAsBoolean()) positionStatement = "Pre Match Stored";
+        else if (joystick.a().getAsBoolean()) positionStatement = "Stored";
+        else if (joystick.rightTrigger(.5).getAsBoolean()) positionStatement = "Ground";
+        return positionStatement;
+    }
+
+    public String goalArrangementPlacing(){
+        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[0];
+        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[1];
+        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[2];
+        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[3];
+        goalArrangement = Constants.Selector.PlacementSelector.getLevel();
+        SmartDashboard.putString("goal setting", goalArrangement);
+        System.out.println("goal setting is " + goalArrangement);
+        return goalArrangement;
+    }
+
+    public String goalArrangementOthers(){
+        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(getConfig())[0];
+        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(getConfig())[1];
+        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(getConfig())[2];
+        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(getConfig())[3];
+        goalArrangement = getConfig();
+        SmartDashboard.putString("goal setting", goalArrangement);
+        return goalArrangement;
+    }
+
+    public String currentArrangementPlacing(){
+        currentArrangement = Constants.Selector.PlacementSelector.getLevel();
+        SmartDashboard.putString("current setting", currentArrangement);
+        return currentArrangement;
+    }
+
+    public String currentArrangementOthers(){
+        currentArrangement = goalArrangementOthers();
+        SmartDashboard.putString("current setting", currentArrangement);
+        return currentArrangement;
     }
 }

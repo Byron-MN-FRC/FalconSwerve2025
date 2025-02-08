@@ -51,15 +51,16 @@ public class MoveWrist extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("starting wrist" + SmartDashboard.getString("Selection", "L1"));
+        System.out.println("starting wrist");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        System.out.println("wrist value going to" + m_wrist.wristTarget);
         // motor.setPosition().wristTarget
     }
-
+    
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {

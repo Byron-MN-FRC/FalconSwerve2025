@@ -13,7 +13,9 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shoulder;
@@ -41,8 +43,9 @@ public class GrabCoralHigh extends SequentialCommandGroup {
               new MoveWrist(Wrist).withTimeout(2),           
               new MoveShoulder(shoulder).withTimeout(3),
               new MoveElevator(Elevator).withTimeout(4),
-              new ClawIntake(Claw).withTimeout(2)
-                  
+              new ClawIntake(Claw).withTimeout(2),
+            new InstantCommand(() -> Robot.getInstance().currentArrangementOthers())
+
         );
 
     }
