@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // TODO set everything to zero
+    // TODO drive everything to zero
   }
 
   @Override
