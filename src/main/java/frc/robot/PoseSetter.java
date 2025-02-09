@@ -14,7 +14,7 @@ public class PoseSetter {
 			put( "L3", new double[] { 5, 10, 20, 90 });
 			put( "L4", new double[] { 10, 10, 100, 90 });
 			put( "Feeder", new double[] { 0, 5, 80, 90});
-			put( "Pre Match Stored", new double[] { 0, 10, 0, 0});
+			put( "Zero", new double[] { 0, 10, 0, 0});
 			put( "Stored", new double[] { 0, 5, 0, 0});
 			put( "Ground", new double[] { 0, 10, 20, 0});
 		}

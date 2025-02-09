@@ -230,8 +230,8 @@ public class RobotContainer {
     private String getConfig(){
         String positionStatement = "blank";
         if (joystick.rightBumper().getAsBoolean()) positionStatement = "Feeder";
-        else if (joystick.back().getAsBoolean()) positionStatement = "Pre Match Stored";
-        else if (joystick.a().getAsBoolean()) positionStatement = "Stored";
+        else if (accessory.getBackButtonPressed()) positionStatement = "Zero";
+        else if (accessory.getAButtonPressed()) positionStatement = "Stored";
         else if (joystick.rightTrigger(.5).getAsBoolean()) positionStatement = "Ground";
         return positionStatement;
     }
