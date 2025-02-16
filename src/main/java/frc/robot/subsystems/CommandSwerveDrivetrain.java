@@ -278,7 +278,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
         Robot.getInstance().field.setRobotPose(getState().Pose);
-
     }
 
     private void startSimThread() {

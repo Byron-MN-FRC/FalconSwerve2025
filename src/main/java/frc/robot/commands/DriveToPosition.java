@@ -27,7 +27,7 @@ public class DriveToPosition extends Command {
     // private static final TrapezoidProfile.Constraints Magnitude_Constraints = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
 
-    private String _limelightName = Constants.limeLightName;
+    private String _limelightName = Constants.VisionConstants.limeLightName;
     private TagApproaches tagApproaches = TagApproaches.getInstance();
 /*old up */
     private final CommandSwerveDrivetrain drivetrain;
@@ -53,9 +53,9 @@ public class DriveToPosition extends Command {
     public DriveToPosition(CommandSwerveDrivetrain subsystem) {
         drivetrain = subsystem;
 
-        xController.setTolerance(0.05);
-        yController.setTolerance(0.05);
-        omegaController.setTolerance(Units.degreesToRadians(2));
+        xController.setTolerance(0.0);
+        yController.setTolerance(0.0);
+        omegaController.setTolerance(Units.degreesToRadians(1));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
         // magnitudeController.setTolerance(0.05);
 
@@ -98,7 +98,7 @@ public class DriveToPosition extends Command {
         // magnitudeController.reset(drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation()));
         System.out.println("yo this works");
         
-        Robot.getInstance().field2.setRobotPose(goalPose);
+        Robot.getInstance().targetPoseField.setRobotPose(goalPose);
     }
 
     // // Called every time the scheduler runs while the command is scheduled.
@@ -155,10 +155,14 @@ public class DriveToPosition extends Command {
         //         .withRotationalRate(omegaSpeed * MaxAngularRate)
         // );
         
+//MaxSpeed = 1;
+        System.out.println("x=" + -xSpeed);
+        System.out.println("y=" + -ySpeed);
+        System.out.println("omega=" + omegaSpeed);
         drivetrain.setControl(
             Robot.getInstance().drive
-                .withVelocityX(xSpeed * MaxSpeed)
-                .withVelocityY(ySpeed * MaxSpeed)
+                .withVelocityX(-xSpeed * MaxSpeed)
+                .withVelocityY(-ySpeed * MaxSpeed)
                 .withRotationalRate(omegaSpeed * MaxAngularRate)
         );
 

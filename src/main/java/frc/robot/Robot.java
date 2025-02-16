@@ -15,16 +15,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  // private final RobotContainer m_robotContainer;
-  private static RobotContainer m_robotContainer = new RobotContainer();
+  private static final RobotContainer m_robotContainer = new RobotContainer();
 
-  private final boolean kUseLimelight = true;
+  private boolean kUseLimelight = true;
 
   public Robot() {
     // m_robotContainer = new RobotContainer();
   }
 
   public static RobotContainer getInstance() {
+
     return m_robotContainer;
   }
 
@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
       double headingDeg = driveState.Pose.getRotation().getDegrees();
       double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
-      LimelightHelpers.SetRobotOrientation(Constants.limeLightName, headingDeg, 0, 0, 0, 0, 0);
-      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.limeLightName);
+      LimelightHelpers.SetRobotOrientation(Constants.VisionConstants.limeLightName, headingDeg, 0, 0, 0, 0, 0);
+      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.VisionConstants.limeLightName);
       if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
         m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose,
             Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("tagselected", Robot.getInstance().globalCurrNumSelected);
+
   }
 
   @Override
