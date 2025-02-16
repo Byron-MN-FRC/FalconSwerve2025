@@ -23,14 +23,15 @@ public class Robot extends TimedRobot {
     // m_robotContainer = new RobotContainer();
   }
 
-  public static RobotContainer getInstance(){
+  public static RobotContainer getInstance() {
+
     return m_robotContainer;
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
+
     /*
      * This example of adding Limelight is very simple and may not be sufficient for
      * on-field use.
@@ -56,17 +57,21 @@ public class Robot extends TimedRobot {
       }
     }
 
-    SmartDashboard.putNumber("tagselected", Robot.getInstance().globalCurrNumSelected); 
+    SmartDashboard.putNumber("tagselected", Robot.getInstance().globalCurrNumSelected);
+
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
@@ -78,10 +83,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -91,10 +98,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -102,11 +111,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
