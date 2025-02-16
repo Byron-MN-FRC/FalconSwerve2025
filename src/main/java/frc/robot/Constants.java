@@ -171,7 +171,7 @@ public class Constants {
     }
 
     public static final class VisionConstants {
-        public static final String limeLightName = "limelight";
+        public static final String limeLightName = "limelight-milkbot";
         public static final String limeLightName2 = "";
         public static final int aprilPipe = 0;
         // public static final int nPipe = 1;

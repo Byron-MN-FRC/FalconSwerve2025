@@ -8,16 +8,27 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.List;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +37,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.GrabCoralHigh;
 import frc.robot.commands.GrabCoralLow;
+import frc.robot.commands.LineUpToTag;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
@@ -117,6 +129,31 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+            SmartDashboard.putData("On-the-fly path", Commands.runOnce(() -> {
+      Pose2d currentPose = drivetrain.getState().Pose;
+      
+      // The rotation component in these poses represents the direction of travel
+      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+      Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(2.0, 0.0)), new Rotation2d());
+
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
+      PathPlannerPath path = new PathPlannerPath(
+        waypoints, 
+        new PathConstraints(
+          4.0, 4.0, 
+          Units.degreesToRadians(360), Units.degreesToRadians(540)
+        ),
+        null, // Ideal starting state can be null for on-the-fly paths
+        new GoalEndState(0.0, currentPose.getRotation())
+      );
+
+      // Prevent this path from being flipped on the red alliance, since the given positions are already correct
+      path.preventFlipping = true;
+
+      AutoBuilder.followPath(path).schedule();
+    }));
+    
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -154,7 +191,6 @@ public class RobotContainer {
         joystick.b().whileTrue(
             new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
-    
         joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
         joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
         joystick.x().onTrue(new InstantCommand(()-> toggleReefOffset()));

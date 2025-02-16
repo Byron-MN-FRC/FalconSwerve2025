@@ -163,7 +163,7 @@ public class TagApproaches {
 
         if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
             System.out.println("shifting");
-            return shiftReefAllign(goalPose, Robot.getInstance().GLOBALOFFSET);
+            return shiftReefAllign(goalPose, 0);
         }
         return goalPose;
                 // return tagArray[indexInArray].DesiredPos();
