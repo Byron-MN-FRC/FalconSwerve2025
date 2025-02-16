@@ -223,18 +223,6 @@ public class RobotContainer {
         btnStore.onTrue(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         drivetrain.registerTelemetry(logger::telemeterize);
-
-        // slow mode
-        joystick.back().onTrue(new InstantCommand(() -> slow()));
-
-        //drive to position
-        joystick.b().whileTrue(
-            new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
-    
-        joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
-        joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
-        joystick.x().onTrue(new InstantCommand(()-> toggleReefOffset()));
     }
 
     public Command getAutonomousCommand() {
