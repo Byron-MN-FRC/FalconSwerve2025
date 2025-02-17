@@ -193,7 +193,7 @@ public class RobotContainer {
             new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf)
         );
         joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
-        joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
+        joystick.a().onTrue(new InstantCommand(() -> plus()));
 
 
         // Accessory buttons
