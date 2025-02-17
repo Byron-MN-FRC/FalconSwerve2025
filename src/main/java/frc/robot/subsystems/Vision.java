@@ -38,7 +38,7 @@ public class Vision extends SubsystemBase {
     // private double rotPower = 0;
 
 
-    private String _limelightName = "limelight-tags";
+    private String _limelightName = Constants.VisionConstants.limeLightName;
 
     // Supplier of pose information for each pose.
     // private TagApproaches _tagApproches;
@@ -54,7 +54,7 @@ public class Vision extends SubsystemBase {
         // _turnToTargetPID.setTolerance(2);
         // _rotateToTargetPID.setTolerance(2);
 
-        LimelightHelpers.setCameraPose_RobotSpace(Constants.VisionConstants.limeLightName, 0.0275, -0.29845, 0.36195, 0, 0, 0);
+        LimelightHelpers.setCameraPose_RobotSpace(_limelightName, 0.0275, -0.29845, 0.36195, 0, 0, 0);
     }
 
     private Pose2d currentOptimalPose;
@@ -63,12 +63,6 @@ public class Vision extends SubsystemBase {
     public void periodic() {
         // Periodically, update the data on the current target
         // UpdateTargetData();
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run when in simulation
-
     }
 
     // private void UpdateTargetData() {

@@ -53,8 +53,8 @@ public class Constants {
             public static String L3;
             public static String L4;
             public static String blank;
-            public static String left;
-            public static String right;
+            public static String left = "left";
+            public static String right = "right";
 
             public PlacementSelector() {
 
