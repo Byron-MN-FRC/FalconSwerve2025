@@ -176,10 +176,16 @@ public class RobotContainer {
         // characterizationJoystick.povDown().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Operator buttons
-        joystick.y().onTrue(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.b().whileTrue(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.a().whileTrue(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        joystick.back().onTrue(new InstantCommand(() -> slow()));
+        joystick.leftTrigger(.5).onTrue(new InstantCommand(() -> goalArrangementPlacing())
+        .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.rightTrigger(.5).whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.y().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //Op Test Buttons TODO Reassign
