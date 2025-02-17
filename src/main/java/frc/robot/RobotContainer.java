@@ -41,6 +41,7 @@ import frc.robot.commands.GrabCoralLow;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
+import frc.robot.commands.StorePreMatch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -218,7 +219,7 @@ public class RobotContainer {
 
         final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
         btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers())
-        .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
         
         drivetrain.registerTelemetry(logger::telemeterize);
     }
