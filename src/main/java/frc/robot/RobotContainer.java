@@ -211,10 +211,15 @@ public class RobotContainer {
     
         final JoystickButton btnClimb = new JoystickButton(accessory, XboxController.Button.kStart.value);        
         btnClimb.onTrue(new Climb(m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        
+        final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
+        btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
-        final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kBack.value);        
-        btnStore.onTrue(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
+        final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
+        btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
