@@ -12,12 +12,12 @@ import java.util.List;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.GrabCoralHigh;
@@ -52,10 +51,11 @@ import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
     // Subsystems
+        public final Claw m_claw = new Claw();
+        public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
         public final Shoulder m_shoulder = new Shoulder();
         public final Wrist m_wrist = new Wrist();
         public final Elevator m_elevator = new Elevator();
-        public final Claw m_claw = new Claw();
         public final Vision m_Vision = new Vision();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -78,7 +78,6 @@ public class RobotContainer {
     private final XboxController accessory = new XboxController(1);
     // private final CommandXboxController characterizationJoystick = new CommandXboxController(2);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -89,7 +88,6 @@ public class RobotContainer {
 
     //TODO reassign
     public int globalCurrNumSelected = 1;
-    public double GLOBALOFFSET = 0.0;
 
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
@@ -109,18 +107,17 @@ public class RobotContainer {
         // Shuffleboard.getTab("REEFSCAPE").add("stage 1", elevatorStage1).withWidget(BuiltInWidgets.kNumberSlider);
         // Shuffleboard.getTab("REEFSCAPE").add("stage 2", elevatorStage2).withWidget(BuiltInWidgets.kNumberSlider);
 
-        //TODO investigate
-        // PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-        //     field.setRobotPose(pose);
-        // });
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            field.setRobotPose(pose);
+        });
         
-        // PathPlannerLogging.setLogTargetPoseCallback((pose) ->  {
-        //     field.getObject("target pose").setPose(pose);
-        // });
+        PathPlannerLogging.setLogTargetPoseCallback((pose) ->  {
+            field.getObject("target pose").setPose(pose);
+        });
 
-        // PathPlannerLogging.setLogActivePathCallback((poses) -> {
-        //     field.getObject("path").setPoses(poses);
-        // });
+        PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            field.getObject("path").setPoses(poses);
+        });
 
         configureBindings();
     }
@@ -191,7 +188,6 @@ public class RobotContainer {
         );
         joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
         joystick.rightBumper().onTrue(new InstantCommand(() -> plus()));
-        joystick.x().onTrue(new InstantCommand(()-> toggleReefOffset()));
 
 
         // Accessory buttons
@@ -238,13 +234,6 @@ public class RobotContainer {
             globalCurrNumSelected--;
         }
     }
-
-    private void toggleReefOffset() {
-        if (GLOBALOFFSET == 0) GLOBALOFFSET = 0.327/2.0;
-        else if (GLOBALOFFSET == 0.327/2.0) GLOBALOFFSET = -0.327/2.0;
-        else if (GLOBALOFFSET == -0.327/2.0) GLOBALOFFSET = 0.0;  
-    }
-
     public Boolean getWristTripped() {
         return false;
        //return !shoulderAndTopCandi.getS2Closed().getValue();

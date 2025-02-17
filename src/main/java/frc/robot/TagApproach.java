@@ -26,6 +26,7 @@ public class TagApproach {
         _desiredPose = desiredPose;
     }
 
+    // unused test method to construct an approach that is not associated with a tag.
     public TagApproach(String descriptor, Alliance alliance, gameTarget targetType, Pose2d desiredPose){
         _fiduciaryNumber = 0;
         _descriptor = descriptor;

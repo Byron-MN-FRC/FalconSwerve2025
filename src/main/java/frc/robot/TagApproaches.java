@@ -20,21 +20,21 @@ public class TagApproaches {
 
     // distance in meters from robot center to front edge of bumper.
     public final double robotWidth = 0.5;
-
-    private double rw = 0.451; // Robot circumference in meters
     Pose2d pose;
+    double poseOffsetx;
+    double poseOffsety;
 
     public TagApproaches() {
-        tagArray = new TagApproach[23];
+        tagArray = new TagApproach[22];
 
-        double poseOffsetx = robotWidth * Math.cos(getTagAngle(1));
-        double poseOffsety = robotWidth * Math.sin(getTagAngle(1));
+        poseOffsetx = robotWidth * Math.cos(getTagAngle(1));
+        poseOffsety = robotWidth * Math.sin(getTagAngle(1));
         pose = calcNewPose(1, poseOffsetx, poseOffsety, 0);
         tagArray[0] = new TagApproach(1, Alliance.Red, gameTarget.CoralStation, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(2));
         poseOffsety = robotWidth * Math.sin(getTagAngle(2));
-        pose = calcNewPose(1, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(2, poseOffsetx, poseOffsety, 0);
         tagArray[1] = new TagApproach(2, Alliance.Red, gameTarget.CoralStation, pose);
 
         pose = calcNewPose(3, 0, -robotWidth, 0);
@@ -118,25 +118,23 @@ public class TagApproaches {
         tagArray[21] = new TagApproach(22, Alliance.Blue, gameTarget.Reef, pose);
 
         // numbers past this point are not tags, but rather user specifified positions
-
-        pose = calcNewPose(4, 7, 0);
-        tagArray[22] = new TagApproach("testPose1", Alliance.Red, gameTarget.Reef, pose);
+        // not used in competition, but exists as a proof of concept
+        // pose = calcNewPose(4, 7, 0);
+        // tagArray[22] = new TagApproach("testPose1", Alliance.Red, gameTarget.Reef, pose);
     }
 
     private Pose2d calcNewPose(int id, double arbX, double arbY, double arbAngle) {
         Pose2d tagPose = FieldLayout.getTagPose(id).get().toPose2d();
 
-        // return new Pose2d(tagPose.getX() + arbX,
-        //         tagPose.getY() + arbY,
-        //         new Rotation2d(Math.toRadians(arbAngle)));
         return new Pose2d(tagPose.getX() + arbX,
                 tagPose.getY() + arbY,
-                new Rotation2d(tagPose.getRotation().getRadians() + Math.toRadians(arbAngle) + Math.toRadians(180)));
+                new Rotation2d(tagPose.getRotation().getRadians() + Math.toRadians(arbAngle) + Math.PI));
     }
 
-    private Pose2d calcNewPose(double arbX, double arbY, double arbAngle) {
-        return new Pose2d(arbX, arbY, new Rotation2d(Math.toRadians(arbAngle)));
-    }
+    /* used to return a pose when the goal position is not measured from an April Tag */
+    // private Pose2d calcNewPose(double arbX, double arbY, double arbAngle) {
+    //     return new Pose2d(arbX, arbY, new Rotation2d(Math.toRadians(arbAngle)));
+    // }
 
     public int FiduciaryNumber(int tagID) {
         return tagArray[tagID - 1].FiduciaryNumber();
@@ -152,6 +150,8 @@ public class TagApproaches {
 
     public Pose2d DesiredRobotPos(int tagID) {
         int indexInArray = tagID - 1;
+
+        /* also exists for the unassiated pose rotation */
         // Alliance alliance = Robot.getInstance().m_Vision.MyAlliance();
         // if (indexInArray > 21 && alliance != null && alliance != tagArray[indexInArray].TagAlliance()) {
             
@@ -166,32 +166,35 @@ public class TagApproaches {
             return shiftReefAllign(goalPose);
         }
         return goalPose;
-                // return tagArray[indexInArray].DesiredPos();
-        // return new Pose2d();
     }
 
     public Pose2d TagFieldPose2d(int tagID) {
         return FieldLayout.getTagPose(tagID).get().toPose2d();
     }
 
-    public Pose2d RotatePose2d(int arrayIndex) {
-        Pose2d oppOrigin = new Pose2d(FieldLayout.getFieldLength(), FieldLayout.getFieldWidth(), new Rotation2d(Math.PI));
-        return tagArray[arrayIndex].DesiredPos().relativeTo(oppOrigin);
+    public double getTagAngle(int tagID) {
+        return FieldLayout.getTagPose(tagID).get().getRotation().toRotation2d().getDegrees();
     }
 
-    public double getTagAngle(int id) {
-        return FieldLayout.getTagPose(id).get().getRotation().toRotation2d().getDegrees();
-    }
+    /* un-finished test method to rotate poses not associated with tags around the center of the field */
+    // public Pose2d RotatePose2d(int arrayIndex) {
+    //     Pose2d oppOrigin = new Pose2d(FieldLayout.getFieldLength(), FieldLayout.getFieldWidth(), new Rotation2d(Math.PI));
+    //     return tagArray[arrayIndex].DesiredPos().relativeTo(oppOrigin);
+    // }
 
     public Pose2d shiftReefAllign(Pose2d goalBeforeShift) {
         double offset = 0;
 
         if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
             offset = 0.327 / 2.0;
+            System.out.println("moving left");
         } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
-            offset = -0.327 / 3.0;
+            offset = -0.327 / 2.0;
+            System.out.println("moving right");
         } else {
             offset = 0;
+            System.out.println("staying in the center");
+            
         }
 
         Rotation2d goalAngle = goalBeforeShift.getRotation();
