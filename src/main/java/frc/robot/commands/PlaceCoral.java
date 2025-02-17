@@ -39,11 +39,10 @@ public class PlaceCoral extends SequentialCommandGroup {
         //
         addCommands(
               new MoveWrist(Wrist).withTimeout(2),           
-              Commands.parallel(
-                  new MoveShoulder(shoulder).withTimeout(3),
-                  new MoveElevator(Elevator).withTimeout(4)
-              ),
-              new ClawDrop(Claw).withTimeout(2)
+              new MoveElevator(Elevator).withTimeout(4),
+              new MoveShoulder(shoulder).withTimeout(3),
+              new ClawDrop(Claw).withTimeout(2),
+            new InstantCommand(() -> Robot.getInstance().currentArrangementPlacing())
         );
 
     }
