@@ -227,7 +227,7 @@ public class RobotContainer {
         if (percentSlow == 1) {
             percentSlow = Constants.SwerveConstants.percentSlow;
         } else {
-            percentSlow = 1l;
+            percentSlow = 1;
         }
     }
 
