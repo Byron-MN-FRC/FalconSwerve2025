@@ -62,6 +62,9 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double percentSlow = 1;
 
+    public String goalArrangement = "blank";
+    public String currentArrangement = "blank";
+
     /* Setting up bindings for necessary control of the swerve drive platform */
     public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -95,15 +98,9 @@ public class RobotContainer {
         SmartDashboard.putData("Target Robot Position", targetPoseField);
 
         // selector spots
-        SmartDashboard.putBoolean("0-0", true);
-        SmartDashboard.putBoolean("1-0", false);
-        SmartDashboard.putBoolean("2-0", false);
-        SmartDashboard.putBoolean("3-0", false);
-        SmartDashboard.putBoolean("0-1", false);
-        SmartDashboard.putBoolean("1-1", false);
-        SmartDashboard.putBoolean("2-1", false);
-        SmartDashboard.putBoolean("3-1", false);
         Constants.Selector.PlacementSelector.initializeTab();
+        SmartDashboard.putString("current setting", currentArrangement);
+        SmartDashboard.putString("goal Setting", goalArrangement);
 
         // sliders for tuning positions? would need to set the motors to these speeds
         // Shuffleboard.getTab("REEFSCAPE").add("shoulder", shouldermotor).withWidget(BuiltInWidgets.kNumberSlider);
@@ -237,4 +234,16 @@ public class RobotContainer {
             globalCurrNumSelected--;
         }
     }
+    public Boolean getWristTripped() {
+        return false;
+       //return !shoulderAndTopCandi.getS2Closed().getValue();
+      }
+      public Boolean getTopStage2() {
+        return false;
+       // return shoulderAndTopCandi.getS1Closed().getValue();
+      }
+      public Boolean getCoralDetect() {
+        return false;
+        //return !wristAndClawCandi.getS1Closed().getValue();
+      }
 }
