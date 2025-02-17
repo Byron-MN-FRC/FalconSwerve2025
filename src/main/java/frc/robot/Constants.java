@@ -88,7 +88,6 @@ public class Constants {
 
             public static void initializeTab() {
                 // Add placement selector to REEFSCAPE tab
-                ShuffleboardTab mainTab = Shuffleboard.getTab("REEFSCAPE");
                 for (int i = 0; i < array.length; i++) {
                     for (int j = 0; j < array[i].length; j++) {
                         array[i][j] = false;

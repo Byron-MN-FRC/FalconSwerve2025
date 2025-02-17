@@ -180,10 +180,10 @@ public class RobotContainer {
         joystick.leftTrigger(.5).onTrue(new InstantCommand(() -> goalArrangementPlacing())
         .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
-        joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Feeder))
         .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
-        joystick.rightTrigger(.5).whileTrue(new InstantCommand(() -> goalArrangementOthers())
+        joystick.rightTrigger(.5).whileTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Ground))
         .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         joystick.y().onTrue(new InstantCommand(() -> slow()));
@@ -213,12 +213,12 @@ public class RobotContainer {
         final JoystickButton btnClimb = new JoystickButton(accessory, XboxController.Button.kStart.value);        
         btnClimb.onTrue(new Climb(m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         
-        final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
-        btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers())
-        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        // final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
+        // btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        // .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
-        btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers())
+        btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
         .andThen(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
         
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -267,12 +267,12 @@ public class RobotContainer {
         return goalArrangement;
     }
 
-    public String goalArrangementOthers(){
-        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(getConfig())[0];
-        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(getConfig())[1];
-        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(getConfig())[2];
-        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(getConfig())[3];
-        goalArrangement = getConfig();
+    public String goalArrangementOthers(String position){
+        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(position)[0];
+        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(position)[1];
+        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(position)[2];
+        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(position)[3];
+        goalArrangement = position;
         SmartDashboard.putString("goal setting", goalArrangement);
         return goalArrangement;
     }
@@ -283,8 +283,8 @@ public class RobotContainer {
         return currentArrangement;
     }
 
-    public String currentArrangementOthers(){
-        currentArrangement = goalArrangementOthers();
+    public String currentArrangementOthers(String position){
+        currentArrangement = goalArrangementOthers(position);
         SmartDashboard.putString("current setting", currentArrangement);
         return currentArrangement;
     }
