@@ -41,7 +41,8 @@ public class GrabCoralLow extends SequentialCommandGroup {
               new MoveWrist(Wrist).withTimeout(2),              
               new MoveElevator(Elevator).withTimeout(4),
               new MoveShoulder(shoulder).withTimeout(3),
-              new ClawIntake(Claw).withTimeout(2)
+              new ClawIntake(Claw).withTimeout(2),
+            new InstantCommand(() -> Robot.getInstance().currentArrangementOthers())
         );
 
     }
