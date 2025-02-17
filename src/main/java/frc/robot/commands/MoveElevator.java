@@ -55,13 +55,14 @@ public class MoveElevator extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("starting elevator to " + PlacementSelector.getLevel());
+        System.out.println("moving elevator to " + PlacementSelector.getLevel());
+        System.out.println("elevator 1 going to" + m_elevator.elevatorStage1Target);
+        System.out.println("elevator 2 going to" + m_elevator.elevatorStage2Target);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.out.println("moving elevator to " + PlacementSelector.getLevel());
         // motor.setPosition().elevatorStage1Target;
         // othermotor.setPosition().elevatorStage2Target;
     }
