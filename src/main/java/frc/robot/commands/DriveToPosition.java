@@ -33,7 +33,6 @@ public class DriveToPosition extends Command {
     private Pose2d goalPose;
     private double initialR;
     private double angle;
-    private double angletest2;
 
     private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
     private final ProfiledPIDController yController = new ProfiledPIDController(2.5, 0, 0, Y_CONSTRAINTS);
@@ -112,7 +111,6 @@ public class DriveToPosition extends Command {
                 
             } else {
                 angle = Math.acos(distCxGx / currentR);
-                angletest2 = Math.acos(distCxGx / currentR);
                 System.out.println("angle is normal");
                 
             }
@@ -167,10 +165,6 @@ public class DriveToPosition extends Command {
                 .withRotationalRate(omegaSpeed * MaxAngularRate)
         );
         
-//MaxSpeed = 1;
-        System.out.println("x=" + -xSpeed);
-        System.out.println("y=" + -ySpeed);
-        System.out.println("omega=" + omegaSpeed);
         // drivetrain.setControl(
         //     Robot.getInstance().drive
         //         .withVelocityX(-xSpeed * MaxSpeed)
