@@ -245,6 +245,49 @@ public class RobotContainer {
             globalCurrNumSelected--;
         }
     }
+    
+    private String getConfig(){
+        String positionStatement = "blank";
+        if (joystick.rightBumper().getAsBoolean()) positionStatement = "Feeder";
+        else if (accessory.getBackButtonPressed()) positionStatement = "Zero";
+        else if (accessory.getAButtonPressed()) positionStatement = "Stored";
+        else if (joystick.rightTrigger(.5).getAsBoolean()) positionStatement = "Ground";
+        return positionStatement;
+    }
+
+    public String goalArrangementPlacing(){
+        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[0];
+        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[1];
+        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[2];
+        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[3];
+        goalArrangement = Constants.Selector.PlacementSelector.getLevel();
+        SmartDashboard.putString("goal setting", goalArrangement);
+        System.out.println("goal setting is " + goalArrangement);
+        return goalArrangement;
+    }
+
+    public String goalArrangementOthers(){
+        Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(getConfig())[0];
+        Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(getConfig())[1];
+        Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(getConfig())[2];
+        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(getConfig())[3];
+        goalArrangement = getConfig();
+        SmartDashboard.putString("goal setting", goalArrangement);
+        return goalArrangement;
+    }
+
+    public String currentArrangementPlacing(){
+        currentArrangement = Constants.Selector.PlacementSelector.getLevel();
+        SmartDashboard.putString("current setting", currentArrangement);
+        return currentArrangement;
+    }
+
+    public String currentArrangementOthers(){
+        currentArrangement = goalArrangementOthers();
+        SmartDashboard.putString("current setting", currentArrangement);
+        return currentArrangement;
+    }
+    
     public Boolean getWristTripped() {
         return false;
        //return !shoulderAndTopCandi.getS2Closed().getValue();
