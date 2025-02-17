@@ -163,7 +163,7 @@ public class TagApproaches {
 
         if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
             System.out.println("shifting");
-            return shiftReefAllign(goalPose, 0);
+            return shiftReefAllign(goalPose);
         }
         return goalPose;
                 // return tagArray[indexInArray].DesiredPos();
@@ -183,12 +183,22 @@ public class TagApproaches {
         return FieldLayout.getTagPose(id).get().getRotation().toRotation2d().getDegrees();
     }
 
-    public Pose2d shiftReefAllign(Pose2d goalBeforeShift, double robotRelativeShift) {
-        System.out.println(robotRelativeShift);
+    public Pose2d shiftReefAllign(Pose2d goalBeforeShift) {
+        double offset = 0;
+
+        if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
+            offset = 0.327 / 2.0;
+        } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
+            offset = -0.327 / 3.0;
+        } else {
+            offset = 0;
+        }
+
         Rotation2d goalAngle = goalBeforeShift.getRotation();
         Translation2d oldTranslation = goalBeforeShift.getTranslation();
-        Translation2d offsetTranslation = new Translation2d(robotRelativeShift, goalAngle.plus(Rotation2d.fromDegrees(90)));
+        Translation2d offsetTranslation = new Translation2d(offset, goalAngle.plus(Rotation2d.fromDegrees(90)));
         Translation2d newGoalTranslation = oldTranslation.plus(offsetTranslation);
+
         return new Pose2d(newGoalTranslation, goalAngle);
     }
 
