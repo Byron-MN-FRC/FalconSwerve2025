@@ -70,18 +70,18 @@ public class DriveToPosition extends Command {
         // Set position of camera based on target seen 
         lastTarget = 0;
         // Verify that see a valid target for aliance and set current robot pose based on it.
-          if (LimelightHelpers.getTV("")) {
+          if (LimelightHelpers.getTV(_limelightName)) {
             int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
-            if ((fidID >= 0) && (fidID <= 22)) {
+            if ((fidID >= 1) && (fidID <= 22)) {
                 lastTarget = fidID;
                 
-                // goalPose = TagApproaches.getInstance().DesiredRobotPos(10);
+                goalPose = TagApproaches.getInstance().DesiredRobotPos(lastTarget);
 
                 // SmartDashboard.putString("goal pose", goalPose.toString());
             }
         }
 
-        goalPose = tagApproaches.DesiredRobotPos(Robot.getInstance().globalCurrNumSelected);
+        // goalPose = tagApproaches.DesiredRobotPos(Robot.getInstance().globalCurrNumSelected);
         initialR = goalPose.getTranslation().getDistance(drivetrain.getState().Pose.getTranslation());
 
 
