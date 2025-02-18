@@ -40,7 +40,6 @@ public class PoseSetter {
 					Constants.ElevatorConstants.stage2UpperLimit,
 					6,
 					Constants.WristConstants.rotationVerticalAlligned
-
 			});
 
 			put(Feeder, new double[] {

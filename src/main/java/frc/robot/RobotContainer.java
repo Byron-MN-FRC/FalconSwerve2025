@@ -8,32 +8,26 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.List;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.commands.AutonGrabCoral;
+import frc.robot.commands.AutonPlaceCoral;
+import frc.robot.commands.ClawDrop;
+import frc.robot.commands.ClawIntake;
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.GrabCoralHigh;
@@ -42,6 +36,10 @@ import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
 import frc.robot.commands.StorePreMatch;
+import frc.robot.commands.ZeroAll;
+import frc.robot.commands.ZeroElevator;
+import frc.robot.commands.ZeroShoulder;
+import frc.robot.commands.ZeroWrist;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -53,14 +51,19 @@ import frc.robot.subsystems.Wrist;
 public class RobotContainer {
     // Subsystems
         public final Claw m_claw = new Claw();
-        public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
         public final Shoulder m_shoulder = new Shoulder();
         public final Wrist m_wrist = new Wrist();
         public final Elevator m_elevator = new Elevator();
         public final Vision m_Vision = new Vision();
+        public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+        //  private CANdi wristAndClawCandi;
+        //  private CANdi shoulderAndTopCandi;
+
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+        // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+        // 3/4 of a rotation per second max angular velocity
     private double percentSlow = 1;
 
     public String goalArrangement = "blank";
@@ -91,8 +94,44 @@ public class RobotContainer {
     public int globalCurrNumSelected = 1;
 
     public RobotContainer() {
+        
+        NamedCommands.registerCommand("AutonPlaceCoral", new AutonPlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw));
+        NamedCommands.registerCommand("AutonGrabCoral", new AutonGrabCoral(m_shoulder, m_elevator, m_wrist, m_claw));
+
+        // wristAndClawCandi = new CANdi(30, "rio");
+        // shoulderAndTopCandi = new CANdi(31, "rio");
+
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
         SmartDashboard.putData("Auto Mode", autoChooser);
+
+        // SmartDashboard Commands
+        // SmartDashboard.putData("AutonGrabCoral", new InstantCommand(() -> command).andThen(new Command()));
+        // SmartDashboard.putData("AutonPlaceCoral", new InstantCommand(() -> command).andThen(new Command()));
+        SmartDashboard.putData("ClawDrop", new ClawDrop(m_claw));
+        SmartDashboard.putData("ClawIntake", new ClawIntake(m_claw));
+        SmartDashboard.putData("Climb", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Climb))
+            .andThen(new Climb(m_elevator)));
+        SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain));
+        SmartDashboard.putData("GrabCoralHigh", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Feeder))
+            .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw)));
+        SmartDashboard.putData("GrabCoralLow", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Ground))
+            .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw)));
+        // SmartDashboard.putData("MoveElevator", new InstantCommand(() -> command)
+        //     .andThen(new MoveElevator(m_elevator)));
+        // SmartDashboard.putData("MoveShoulder", new InstantCommand(() -> command)
+        //     .andThen(new MoveShoulder(m_shoulder)));
+        // SmartDashboard.putData("MoveWrist", new InstantCommand(() -> command)
+        //     .andThen(new MoveWrist(m_wrist)));
+        SmartDashboard.putData("PlaceCoral", new InstantCommand(() -> goalArrangementPlacing())
+            .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw)));
+        SmartDashboard.putData("Store", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
+            .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw)));
+        SmartDashboard.putData("StorePreMatch", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
+            .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw)));
+        SmartDashboard.putData("ZeroAll", new ZeroAll(m_shoulder, m_elevator, m_wrist, m_claw));
+        SmartDashboard.putData("ZeroElevator", new ZeroElevator(m_elevator));
+        SmartDashboard.putData("ZeroShoulder", new ZeroShoulder(m_shoulder));
+        SmartDashboard.putData("ZeroWrist", new ZeroWrist(m_wrist));
 
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
@@ -102,11 +141,6 @@ public class RobotContainer {
         Constants.Selector.PlacementSelector.initializeTab();
         SmartDashboard.putString("current setting", currentArrangement);
         SmartDashboard.putString("goal Setting", goalArrangement);
-
-        // sliders for tuning positions? would need to set the motors to these speeds
-        // Shuffleboard.getTab("REEFSCAPE").add("shoulder", shouldermotor).withWidget(BuiltInWidgets.kNumberSlider);
-        // Shuffleboard.getTab("REEFSCAPE").add("stage 1", elevatorStage1).withWidget(BuiltInWidgets.kNumberSlider);
-        // Shuffleboard.getTab("REEFSCAPE").add("stage 2", elevatorStage2).withWidget(BuiltInWidgets.kNumberSlider);
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
             field.setRobotPose(pose);
@@ -123,32 +157,7 @@ public class RobotContainer {
         configureBindings();
     }
 
-    private void configureBindings() {
-
-            SmartDashboard.putData("On-the-fly path", Commands.runOnce(() -> {
-      Pose2d currentPose = drivetrain.getState().Pose;
-      
-      // The rotation component in these poses represents the direction of travel
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-      Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(2.0, 0.0)), new Rotation2d());
-
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-        waypoints, 
-        new PathConstraints(
-          4.0, 4.0, 
-          Units.degreesToRadians(360), Units.degreesToRadians(540)
-        ),
-        null, // Ideal starting state can be null for on-the-fly paths
-        new GoalEndState(0.0, currentPose.getRotation())
-      );
-
-      // Prevent this path from being flipped on the red alliance, since the given positions are already correct
-      path.preventFlipping = true;
-
-      AutoBuilder.followPath(path).schedule();
-    }));
-    
+    private void configureBindings() {    
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -179,6 +188,8 @@ public class RobotContainer {
         // Operator buttons
         joystick.leftTrigger(.5).onTrue(new InstantCommand(() -> goalArrangementPlacing())
         .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+
+        joystick.leftTrigger(.5).onFalse(new ClawDrop(m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Feeder))
         .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
@@ -213,13 +224,17 @@ public class RobotContainer {
         final JoystickButton btnClimb = new JoystickButton(accessory, XboxController.Button.kStart.value);        
         btnClimb.onTrue(new Climb(m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         
-        // final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
-        // btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers())
-        // .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        final JoystickButton btnZeroAll = new JoystickButton(accessory, XboxController.Button.kBack.value);
+        btnZeroAll.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Zero))
+        .andThen(new ZeroAll(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        
+        final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
+        btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
+        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
         btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
-        .andThen(new Store(m_shoulder, m_elevator, m_wrist).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
         
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -245,15 +260,6 @@ public class RobotContainer {
         if (globalCurrNumSelected > 1) {
             globalCurrNumSelected--;
         }
-    }
-    
-    private String getConfig(){
-        String positionStatement = "blank";
-        if (joystick.rightBumper().getAsBoolean()) positionStatement = "Feeder";
-        else if (accessory.getBackButtonPressed()) positionStatement = "Zero";
-        else if (accessory.getAButtonPressed()) positionStatement = "Stored";
-        else if (joystick.rightTrigger(.5).getAsBoolean()) positionStatement = "Ground";
-        return positionStatement;
     }
 
     public String goalArrangementPlacing(){
