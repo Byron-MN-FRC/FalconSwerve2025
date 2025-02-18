@@ -23,9 +23,9 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     // m_robotContainer = new RobotContainer();
-    HttpCamera frontCam = new HttpCamera("FrontCam", "http://frcvision.local:1181/stream.mjpg");
+    HttpCamera frontCam = new HttpCamera("FrontCam", "http://10.48.59.11:5800");
     CameraServer.addCamera(frontCam);
-    HttpCamera backCam = new HttpCamera("BackCam", "http://frcvision.local:1181/stream.mjpg");
+    HttpCamera backCam = new HttpCamera("BackCam", "http://10.48.59.12:5800");
     CameraServer.addCamera(backCam);
   }
 
