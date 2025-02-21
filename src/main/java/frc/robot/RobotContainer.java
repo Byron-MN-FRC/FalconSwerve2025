@@ -56,6 +56,7 @@ public class RobotContainer {
         public final Elevator m_elevator = new Elevator();
         public final Vision m_Vision = new Vision();
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+        public PowerDistribution pdp = new PowerDistribution(20, ModuleType.kRev);
 
         //  private CANdi wristAndClawCandi;
         //  private CANdi shoulderAndTopCandi;

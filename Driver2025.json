@@ -10,229 +10,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "titleType": 0,
-        "tiles": {
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Autonomous Command",
-              "_title": "/SmartDashboard/Autonomous Command",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto Mode",
-              "_title": "/SmartDashboard/Auto Mode",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/0-0",
-              "_title": "/SmartDashboard/0-0",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/1-0",
-              "_title": "/SmartDashboard/1-0",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/2-0",
-              "_title": "/SmartDashboard/2-0",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/3-0",
-              "_title": "/SmartDashboard/3-0",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/0-1",
-              "_title": "/SmartDashboard/0-1",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/1-1",
-              "_title": "/SmartDashboard/1-1",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/2-1",
-              "_title": "/SmartDashboard/2-1",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "1,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/3-1",
-              "_title": "/SmartDashboard/3-1",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Top Stage 2",
-              "_title": "/SmartDashboard/Top Stage 2",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/See Coral",
-              "_title": "/SmartDashboard/See Coral",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Wrist Zero",
-              "_title": "/SmartDashboard/Wrist Zero",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Stage 2",
-              "_title": "/SmartDashboard/Stage 2",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Coral",
-              "_title": "/SmartDashboard/Coral",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          }
-        }
+        "tiles": {}
       }
     },
     {
@@ -363,61 +141,6 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "0,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "5,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://BackCam",
-              "_title": "BackCam",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///CameraPublisher/USB Camera 0",
-              "_title": "/CameraPublisher/USB Camera 0",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "5,2": {
             "size": [
               1,
@@ -447,15 +170,101 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode",
+              "_title": "/SmartDashboard/Auto Mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Selected Auto Reef Level",
+              "_title": "/SmartDashboard/Selected Auto Reef Level",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight-front",
+              "_title": "limelight-front",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "5,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight-back",
+              "_title": "limelight-back",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "0,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Voltage View",
+              "_source0": "network_table:///SmartDashboard/Battery",
+              "_title": "/SmartDashboard/Battery",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 13.0,
+              "Range/Center": 0.0,
+              "Visuals/Orientation": "HORIZONTAL",
+              "Visuals/Number of tick marks": 5
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.333333492279053,
-    "y": -7.333333492279053,
-    "width": 1294.6666259765625,
-    "height": 694.6666870117188
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1382.0,
+    "height": 744.0
   }
 }
