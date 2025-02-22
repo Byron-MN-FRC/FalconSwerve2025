@@ -14,6 +14,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -56,7 +58,7 @@ public class RobotContainer {
         public final Elevator m_elevator = new Elevator();
         public final Vision m_Vision = new Vision();
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-        public PowerDistribution pdp = new PowerDistribution(20, ModuleType.kRev);
+        // public PowerDistribution pdp = new PowerDistribution(20, ModuleType.kRev);
 
         //  private CANdi wristAndClawCandi;
         //  private CANdi shoulderAndTopCandi;
