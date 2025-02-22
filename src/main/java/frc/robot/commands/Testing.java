@@ -13,7 +13,7 @@ public class Testing extends Command {
   @Override
   public void initialize() {
     TagApproaches.getInstance().addTagCentricOffset(
-      new Pose2d(5, 5, new Rotation2d(Math.PI)), 
+      new Pose2d(0, 0, new Rotation2d(Math.PI)), 
       new Pose2d(0.0, 1, new Rotation2d(0)));
 
       TagApproaches.getInstance().addTagCentricOffset(
