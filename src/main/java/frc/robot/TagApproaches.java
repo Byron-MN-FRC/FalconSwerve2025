@@ -103,28 +103,37 @@ public class TagApproaches {
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(17));
         poseOffsety = robotWidth * Math.sin(getTagAngle(17));
-        pose = calcNewPose(17, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(17, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 13.93, 2.58, 60);
         tagArray[16] = new TagApproach(17, Alliance.Blue, gameTarget.Reef, pose);
 
-        pose = calcNewPose(18, -robotWidth, 0, 0);
+        // pose = calcNewPose(18, -robotWidth, 0, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 14.75, 3.96, 0);
+
         tagArray[17] = new TagApproach(18, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(19));
         poseOffsety = robotWidth * Math.sin(getTagAngle(19));
-        pose = calcNewPose(19, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(19, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 13.93, 5.39, -60);
+
         tagArray[18] = new TagApproach(19, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(20));
         poseOffsety = robotWidth * Math.sin(getTagAngle(20));
-        pose = calcNewPose(20, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(20, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 5.39, -120);
+
         tagArray[19] = new TagApproach(20, Alliance.Blue, gameTarget.Reef, pose);
 
-        pose = calcNewPose(21, robotWidth, 0, 0);
+        // pose = calcNewPose(21, robotWidth, 0, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 11.38, 3.96, 180);
         tagArray[20] = new TagApproach(21, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(22));
         poseOffsety = robotWidth * Math.sin(getTagAngle(22));
-        pose = calcNewPose(22, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(22, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 2.58, 120);
         tagArray[21] = new TagApproach(22, Alliance.Blue, gameTarget.Reef, pose);
 
         // numbers past this point are not tags, but rather user specifified positions
