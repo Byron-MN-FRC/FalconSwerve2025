@@ -36,6 +36,7 @@ import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
 import frc.robot.commands.Store;
 import frc.robot.commands.StorePreMatch;
+import frc.robot.commands.Testing;
 import frc.robot.commands.ZeroAll;
 import frc.robot.commands.ZeroElevator;
 import frc.robot.commands.ZeroShoulder;
@@ -132,6 +133,8 @@ public class RobotContainer {
         SmartDashboard.putData("ZeroElevator", new ZeroElevator(m_elevator));
         SmartDashboard.putData("ZeroShoulder", new ZeroShoulder(m_shoulder));
         SmartDashboard.putData("ZeroWrist", new ZeroWrist(m_wrist));
+        SmartDashboard.putData("testing", new Testing());
+
 
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);

@@ -181,6 +181,34 @@ public class TagApproaches {
     //     Pose2d oppOrigin = new Pose2d(FieldLayout.getFieldLength(), FieldLayout.getFieldWidth(), new Rotation2d(Math.PI));
     //     return tagArray[arrayIndex].DesiredPos().relativeTo(oppOrigin);
     // }
+    
+    public Pose2d addTagCentricOffset(Pose2d goalBeforeShift, Pose2d offsetTagRelative) { //goalBeforeShift if field relative ||| offsetTagRelative is tagRelative
+        System.out.println("start");
+        System.out.println("start");
+        System.out.println("start");
+        System.out.println("goal before shift: " + goalBeforeShift.toString());
+        double magnitudeOfOffset = offsetTagRelative.getTranslation().getDistance(new Translation2d());
+        System.out.println("magnitudeOfOffset" + magnitudeOfOffset);
+        Rotation2d TagAngle = goalBeforeShift.getRotation();
+        System.out.println("tagAngle: " + TagAngle.toString());
+        double offsetXBeforeShift = offsetTagRelative.getX();
+        System.out.println("goalXBeforeShift" + offsetXBeforeShift);
+        double offsetYBeforeShift = offsetTagRelative.getY();
+        System.out.println("goalYBeforeShift" + offsetYBeforeShift);
+        Rotation2d offsetAngleAwayFromTagToStandardPosition = new Rotation2d(Math.atan2(offsetYBeforeShift, offsetXBeforeShift));
+        System.out.println("offsetAngleRefPos: " + offsetAngleAwayFromTagToStandardPosition.toString());
+        Rotation2d finalRefAngle = TagAngle.minus(new Rotation2d(90)).plus(offsetAngleAwayFromTagToStandardPosition);
+        System.out.println("finalRefAngle: " + finalRefAngle.toString());
+        Translation2d newOffsetTranslation = new Translation2d(magnitudeOfOffset, finalRefAngle);
+        System.out.println("OffsetTranslation: " + newOffsetTranslation.toString());
+        Pose2d finalpose = new Pose2d(newOffsetTranslation, goalBeforeShift.getRotation());
+        System.out.println(finalpose.toString());
+        System.out.println("end");
+        System.out.println("end");
+        System.out.println("end");
+
+        return finalpose;
+    }
 
     public Pose2d shiftReefAllign(Pose2d goalBeforeShift) {
         double offset = 0;
