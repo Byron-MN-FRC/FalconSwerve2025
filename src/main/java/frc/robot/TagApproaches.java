@@ -202,29 +202,34 @@ public class TagApproaches {
     // }
     
     public Pose2d addTagCentricOffset(Pose2d goalBeforeShift, Pose2d offsetTagRelative) { //goalBeforeShift if field relative ||| offsetTagRelative is tagRelative
-        System.out.println("start");
-        System.out.println("start");
-        System.out.println("start");
-        double magnitudeOfOffset = offsetTagRelative.getTranslation().getDistance(new Translation2d());
+        // System.out.println("start");
+        // System.out.println("start");
+        // System.out.println("start");
+        // double magnitudeOfOffset = offsetTagRelative.getTranslation().getDistance(new Translation2d());
         Rotation2d TagAngle = goalBeforeShift.getRotation();
-        double offsetXBeforeShift = offsetTagRelative.getX();
-        double offsetYBeforeShift = offsetTagRelative.getY();
-        Rotation2d offsetAngleAwayFromTagToStandardPosition = new Rotation2d(Math.atan2(offsetYBeforeShift, offsetXBeforeShift));
-        Rotation2d finalRefAngle = TagAngle.minus(new Rotation2d(90)).plus(offsetAngleAwayFromTagToStandardPosition);
-        Translation2d newOffsetTranslation = new Translation2d(magnitudeOfOffset, finalRefAngle);
-        Pose2d finalpose = new Pose2d(newOffsetTranslation, goalBeforeShift.getRotation());
-        System.out.println("goal before shift: " + goalBeforeShift.toString());
-        System.out.println("magnitudeOfOffset" + magnitudeOfOffset);
-        System.out.println("tagAngle: " + TagAngle.toString());
-        System.out.println("goalXBeforeShift" + offsetXBeforeShift);
-        System.out.println("goalYBeforeShift" + offsetYBeforeShift);
-        System.out.println("offsetAngleRefPos: " + offsetAngleAwayFromTagToStandardPosition.toString());
-        System.out.println("finalRefAngle: " + finalRefAngle.toString());
-        System.out.println("OffsetTranslation: " + newOffsetTranslation.toString());
-        System.out.println(finalpose.toString());
-        System.out.println("end");
-        System.out.println("end");
-        System.out.println("end");
+        // double offsetXBeforeShift = offsetTagRelative.getX();
+        // double offsetYBeforeShift = offsetTagRelative.getY();
+        // Rotation2d offsetAngleAwayFromTagToStandardPosition = new Rotation2d(Math.atan2(offsetYBeforeShift, offsetXBeforeShift));
+        // Rotation2d finalRefAngle = TagAngle.minus(new Rotation2d(90)).plus(offsetAngleAwayFromTagToStandardPosition);
+        // Translation2d newOffsetTranslation = new Translation2d(magnitudeOfOffset, finalRefAngle);
+        // Pose2d finalpose = new Pose2d(newOffsetTranslation, goalBeforeShift.getRotation());
+        // System.out.println("goal before shift: " + goalBeforeShift.toString());
+        // System.out.println("magnitudeOfOffset" + magnitudeOfOffset);
+        // System.out.println("tagAngle: " + TagAngle.toString());
+        // System.out.println("goalXBeforeShift" + offsetXBeforeShift);
+        // System.out.println("goalYBeforeShift" + offsetYBeforeShift);
+        // System.out.println("offsetAngleRefPos: " + offsetAngleAwayFromTagToStandardPosition.toString());
+        // System.out.println("finalRefAngle: " + finalRefAngle.toString());
+        // System.out.println("OffsetTranslation: " + newOffsetTranslation.toString());
+        // System.out.println(finalpose.toString());
+        // System.out.println("end");
+        // System.out.println("end");
+        // System.out.println("end");
+        Translation2d tagOrientedOffsetTranslation = offsetTagRelative.getTranslation();
+        Translation2d fieldOrientedOffset = tagOrientedOffsetTranslation.rotateBy(TagAngle.minus(new Rotation2d(Math.PI / 2)));
+
+        
+        Pose2d finalpose = goalBeforeShift.plus(fieldOrientedOffset, TagAngle);
 
         return finalpose;
     }
