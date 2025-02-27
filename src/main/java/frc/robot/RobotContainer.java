@@ -133,7 +133,6 @@ public class RobotContainer {
         SmartDashboard.putData("ZeroShoulder", new ZeroShoulder(m_shoulder));
         SmartDashboard.putData("ZeroWrist", new ZeroWrist(m_wrist));
 
-
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
         SmartDashboard.putData("Target Robot Position", targetPoseField);
