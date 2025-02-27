@@ -186,10 +186,10 @@ public class TagApproaches {
         
         Pose2d goalPose = tagArray[indexInArray].DesiredPos();
 
-        // if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
-        //     System.out.println("shifting");
-        //     return shiftReefAllign(goalPose);
-        // }
+        if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
+            System.out.println("shifting");
+            return shiftReefAllign(goalPose);
+        }
         return goalPose;
     }
 
