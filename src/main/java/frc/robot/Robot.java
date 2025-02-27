@@ -39,7 +39,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Stage 2", m_robotContainer.getTopStage2());
     SmartDashboard.putBoolean("Coral", m_robotContainer.getCoralDetect());
     SmartDashboard.putBoolean("Wrist Zero", m_robotContainer.getWristTripped());
-    SmartDashboard.putString("currentPose", Robot.getInstance().drivetrain.getState().Pose.toString());
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for
