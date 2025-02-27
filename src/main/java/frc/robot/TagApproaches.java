@@ -190,21 +190,23 @@ public class TagApproaches {
     //     return tagArray[arrayIndex].DesiredPos().relativeTo(oppOrigin);
     // }
     
-    public Pose2d addTagCentricOffset(Pose2d goalBeforeShift, Translation2d offsetTagRelative) { //goalBeforeShift if field relative ||| offsetTagRelative is tagRelative
+    public Pose2d addTagCentricOffset(Pose2d goalBeforeShift, Pose2d offsetTagRelative) { //goalBeforeShift if field relative ||| offsetTagRelative is tagRelative
 
 
         System.out.println("goalBS" + goalBeforeShift);
         System.out.println("offsetTR" + offsetTagRelative);
         Rotation2d TagAngle = goalBeforeShift.getRotation();
+        Translation2d offsetTagRelativeTranslation = offsetTagRelative.getTranslation();
+        Rotation2d offsetRotation = offsetTagRelative.getRotation();
         System.out.println("tA" + TagAngle);
 
         Translation2d TagTranslation = goalBeforeShift.getTranslation();
         System.out.println("tagT" + TagTranslation);
-        Translation2d fieldOrientedOffset = offsetTagRelative.rotateBy(TagAngle.minus(new Rotation2d(Math.PI / 2)));
+        Translation2d fieldOrientedOffset = offsetTagRelativeTranslation.rotateBy(TagAngle.minus(new Rotation2d(Math.PI / 2)));
         System.out.println("fieldOO" + fieldOrientedOffset);
         Translation2d newTranslation = TagTranslation.plus(fieldOrientedOffset);
         System.out.println("newT" + newTranslation);
-        Pose2d newPose = new Pose2d(newTranslation, TagAngle);
+        Pose2d newPose = new Pose2d(newTranslation, TagAngle.plus(offsetRotation));
         return newPose;
     }
 
