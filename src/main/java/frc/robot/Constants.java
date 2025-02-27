@@ -10,10 +10,14 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import java.security.PublicKey;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -183,5 +187,7 @@ public class Constants {
         public static final String limeLightName2 = "limelight-back";
         public static final int aprilPipe = 0;
         // public static final int Pipe2 = 1;
+
+        public static final Translation2d ReefTagOffset = new Translation2d(0, Units.inchesToMeters(16));
     }
 }

@@ -31,7 +31,6 @@ public class DriveToPosition extends Command {
     private TagApproaches tagApproaches = TagApproaches.getInstance();
     private final CommandSwerveDrivetrain drivetrain;
     private Pose2d goalPose;
-    private double initialR;
     private double angle;
 
     private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
@@ -70,7 +69,7 @@ public class DriveToPosition extends Command {
         // Set position of camera based on target seen 
         lastTarget = 0;
         // Verify that see a valid target for aliance and set current robot pose based on it.
-          if (LimelightHelpers.getTV(_limelightName)) {
+        if (LimelightHelpers.getTV(_limelightName)) {
             int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
             if ((fidID >= 1) && (fidID <= 22)) {
                 lastTarget = fidID;
@@ -79,12 +78,11 @@ public class DriveToPosition extends Command {
 
                 // SmartDashboard.putString("goal pose", goalPose.toString());
             }
+        } else {
+            goalPose = Robot.getInstance().drivetrain.getState().Pose;
         }
 
         // goalPose = tagApproaches.DesiredRobotPos(Robot.getInstance().globalCurrNumSelected);
-        initialR = goalPose.getTranslation().getDistance(drivetrain.getState().Pose.getTranslation());
-
-
 
         SmartDashboard.putString("goal pose", goalPose.toString());
 

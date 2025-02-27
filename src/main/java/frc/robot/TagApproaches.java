@@ -19,7 +19,7 @@ public class TagApproaches {
     }
 
     // distance in meters from robot center to front edge of bumper.
-    public final double robotWidth = 0.5;
+    public final double robotWidth = 0.0;//.5
     Pose2d pose;
     double poseOffsetx;
     double poseOffsety;
@@ -49,39 +49,40 @@ public class TagApproaches {
         // moving the robot back to account for the distance between robot center and edge of bumpers
         poseOffsetx = robotWidth * Math.cos(getTagAngle(6));
         poseOffsety = robotWidth * Math.sin(getTagAngle(6));
-        pose = calcNewPose(6, poseOffsetx, posfeOffsety, 0);
+        pose = calcNewPose(6, poseOffsetx, poseOffsety, 0);
         // pose = calcNewPose(13.96, 2.64, 120);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16));
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[5] = new TagApproach(6, Alliance.Red, gameTarget.Reef, pose);
         
         pose = calcNewPose(7, robotWidth, 0, 0);
         // pose = calcNewPose(14.75, 3.97, 180);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[6] = new TagApproach(7, Alliance.Red, gameTarget.Reef, pose);
         
         poseOffsetx = robotWidth * Math.cos(getTagAngle(8));
         poseOffsety = robotWidth * Math.sin(getTagAngle(8));
         pose = calcNewPose(8, poseOffsetx, poseOffsety, 0);
         // pose = calcNewPose(13.90, 5.36, -120);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16));
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[7] = new TagApproach(8, Alliance.Red, gameTarget.Reef, pose);
         
         poseOffsetx = robotWidth * Math.cos(getTagAngle(9));
         poseOffsety = robotWidth * Math.sin(getTagAngle(9));
         pose = calcNewPose(9, poseOffsetx, poseOffsety, 0);
         // pose = calcNewPose(12.13, 5.42, -60);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16));
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[8] = new TagApproach(9, Alliance.Red, gameTarget.Reef, pose);
         
         pose = calcNewPose(10, -robotWidth, 0, 0);
         // pose = calcNewPose(11.38, 3.95, 0);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16));
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[9] = new TagApproach(10, Alliance.Red, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(11));
         poseOffsety = robotWidth * Math.sin(getTagAngle(11));
-        // pose = calcNewPose(11, poseOffsetx, poseOffsety, 0);
-        pose = calcNewPose(12.28, 2.52, 60);
+        pose = calcNewPose(11, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(12.28, 2.52, 60);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[10] = new TagApproach(11, Alliance.Red, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(12));
@@ -107,36 +108,38 @@ public class TagApproaches {
         poseOffsety = robotWidth * Math.sin(getTagAngle(17));
         pose = calcNewPose(17, poseOffsetx, poseOffsety, 0);
         // pose = calcNewPose(FieldLayout.getFieldLength() - 13.93, 2.58, 60);
-        pose = addTagCentricOffset(pose, new Translation2d(0, 16));
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[16] = new TagApproach(17, Alliance.Blue, gameTarget.Reef, pose);
 
         pose = calcNewPose(18, -robotWidth, 0, 0);
-        pose = calcNewPose(FieldLayout.getFieldLength() - 14.75, 3.96, 0);
-
+        // pose = calcNewPose(FieldLayout.getFieldLength() - 14.75, 3.96, 0);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[17] = new TagApproach(18, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(19));
         poseOffsety = robotWidth * Math.sin(getTagAngle(19));
-        // pose = calcNewPose(19, poseOffsetx, poseOffsety, 0);
-        pose = calcNewPose(FieldLayout.getFieldLength() - 13.93, 5.39, -60);
-
+        pose = calcNewPose(19, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(FieldLayout.getFieldLength() - 13.93, 5.39, -60);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[18] = new TagApproach(19, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(20));
         poseOffsety = robotWidth * Math.sin(getTagAngle(20));
-        // pose = calcNewPose(20, poseOffsetx, poseOffsety, 0);
-        pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 5.39, -120);
-
+        pose = calcNewPose(20, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 5.39, -120);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[19] = new TagApproach(20, Alliance.Blue, gameTarget.Reef, pose);
 
-        // pose = calcNewPose(21, robotWidth, 0, 0);
-        pose = calcNewPose(FieldLayout.getFieldLength() - 11.38, 3.96, 180);
+        pose = calcNewPose(21, robotWidth, 0, 0);
+        // pose = calcNewPose(FieldLayout.getFieldLength() - 11.38, 3.96, 180);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[20] = new TagApproach(21, Alliance.Blue, gameTarget.Reef, pose);
 
         poseOffsetx = robotWidth * Math.cos(getTagAngle(22));
         poseOffsety = robotWidth * Math.sin(getTagAngle(22));
-        // pose = calcNewPose(22, poseOffsetx, poseOffsety, 0);
-        pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 2.58, 120);
+        pose = calcNewPose(22, poseOffsetx, poseOffsety, 0);
+        // pose = calcNewPose(FieldLayout.getFieldLength() - 12.205, 2.58, 120);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[21] = new TagApproach(22, Alliance.Blue, gameTarget.Reef, pose);
 
         // numbers past this point are not tags, but rather user specifified positions
@@ -150,7 +153,7 @@ public class TagApproaches {
 
         return new Pose2d(tagPose.getX() + arbX,
                 tagPose.getY() + arbY,
-                new Rotation2d(tagPose.getRotation().getRadians() + Math.toRadians(arbAngle) + Math.PI));
+                new Rotation2d(tagPose.getRotation().getRadians()/* + Math.toRadians(arbAngle) + Math.PI*/));
     }
 
     /* used to return a pose when the goal position is not measured from an April Tag */
@@ -183,10 +186,10 @@ public class TagApproaches {
         
         Pose2d goalPose = tagArray[indexInArray].DesiredPos();
 
-        if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
-            System.out.println("shifting");
-            return shiftReefAllign(goalPose);
-        }
+        // if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
+        //     System.out.println("shifting");
+        //     return shiftReefAllign(goalPose);
+        // }
         return goalPose;
     }
 
@@ -205,33 +208,19 @@ public class TagApproaches {
     // }
     
     public Pose2d addTagCentricOffset(Pose2d goalBeforeShift, Translation2d offsetTagRelative) { //goalBeforeShift if field relative ||| offsetTagRelative is tagRelative
-        // System.out.println("start");
-        // System.out.println("start");
-        // System.out.println("start");
-        // double magnitudeOfOffset = offsetTagRelative.getTranslation().getDistance(new Translation2d());
-        // double offsetXBeforeShift = offsetTagRelative.getX();
-        // double offsetYBeforeShift = offsetTagRelative.getY();
-        // Rotation2d offsetAngleAwayFromTagToStandardPosition = new Rotation2d(Math.atan2(offsetYBeforeShift, offsetXBeforeShift));
-        // Rotation2d finalRefAngle = TagAngle.minus(new Rotation2d(90)).plus(offsetAngleAwayFromTagToStandardPosition);
-        // Translation2d newOffsetTranslation = new Translation2d(magnitudeOfOffset, finalRefAngle);
-        // Pose2d finalpose = new Pose2d(newOffsetTranslation, goalBeforeShift.getRotation());
-        // System.out.println("goal before shift: " + goalBeforeShift.toString());
-        // System.out.println("magnitudeOfOffset" + magnitudeOfOffset);
-        // System.out.println("tagAngle: " + TagAngle.toString());
-        // System.out.println("goalXBeforeShift" + offsetXBeforeShift);
-        // System.out.println("goalYBeforeShift" + offsetYBeforeShift);
-        // System.out.println("offsetAngleRefPos: " + offsetAngleAwayFromTagToStandardPosition.toString());
-        // System.out.println("finalRefAngle: " + finalRefAngle.toString());
-        // System.out.println("OffsetTranslation: " + newOffsetTranslation.toString());
-        // System.out.println(finalpose.toString());
-        // System.out.println("end");
-        // System.out.println("end");
-        // System.out.println("end");
+
+
+        System.out.println("goalBS" + goalBeforeShift);
+        System.out.println("offsetTR" + offsetTagRelative);
         Rotation2d TagAngle = goalBeforeShift.getRotation();
-        Translation2d TagTranslation = goalBeforeShiftq.getTranslation();
-        Translation2d fieldOrientedOffset = tagOrientedOffsetTranslation.rotateBy(TagAngle.minus(new Rotation2d(Math.PI / 2)));
-        
+        System.out.println("tA" + TagAngle);
+
+        Translation2d TagTranslation = goalBeforeShift.getTranslation();
+        System.out.println("tagT" + TagTranslation);
+        Translation2d fieldOrientedOffset = offsetTagRelative.rotateBy(TagAngle.minus(new Rotation2d(Math.PI / 2)));
+        System.out.println("fieldOO" + fieldOrientedOffset);
         Translation2d newTranslation = TagTranslation.plus(fieldOrientedOffset);
+        System.out.println("newT" + newTranslation);
         Pose2d newPose = new Pose2d(newTranslation, TagAngle);
         return newPose;
     }
