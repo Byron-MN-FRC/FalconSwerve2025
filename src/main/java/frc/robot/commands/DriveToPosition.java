@@ -57,7 +57,7 @@ public class DriveToPosition extends Command {
         yController.setTolerance(0.0);
         omegaController.setTolerance(Units.degreesToRadians(1));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        magnitudeController.setTolerance(0.01);
+        magnitudeController.setTolerance(0.001);
 
         addRequirements(drivetrain);
     }
