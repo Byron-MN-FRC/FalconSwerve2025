@@ -92,7 +92,7 @@ public class RobotContainer {
 
     //TODO reassign
     public int globalCurrNumSelected = 1;
-
+    
     public RobotContainer() {
         
         NamedCommands.registerCommand("AutonPlaceCoral", new AutonPlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw));
@@ -198,7 +198,9 @@ public class RobotContainer {
         .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         joystick.y().onTrue(new InstantCommand(() -> slow()));
-        joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.1))).andThen(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andThen(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())));
+
+
 
         //Op Test Buttons TODO Reassign
         joystick.b().whileTrue(

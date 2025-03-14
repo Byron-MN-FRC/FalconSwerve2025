@@ -2,24 +2,21 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Robot;
 
 public class Vision extends SubsystemBase {
     
     private static final Vision m_Vision = new Vision();
     public boolean tempDisable = false;
-    private boolean timestampToReEnable = 0;
+    private double timestampToReEnable;
     private String _limelightName = Constants.VisionConstants.limeLightName;
 
     public static Vision getInstance() {
@@ -32,8 +29,9 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (timestampToReEnable < Utils.getCurrentTimeSeconds()){
+        if (timestampToReEnable < Utils.getCurrentTimeSeconds() && tempDisable == true){
             tempDisable = false;
+            
         }
         SmartDashboard.putBoolean("tempDisable", tempDisable);
     }
@@ -63,5 +61,6 @@ public class Vision extends SubsystemBase {
         tempDisable = true;
         double currentTime = Utils.getCurrentTimeSeconds();
         timestampToReEnable = currentTime + seconds;
+        
     }
 }
