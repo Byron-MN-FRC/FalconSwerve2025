@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
 
       LimelightHelpers.SetRobotOrientation(Constants.VisionConstants.limeLightName, headingDeg, 0, 0, 0, 0, 0);
       var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.VisionConstants.limeLightName);
-      if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0) {
+      if (llMeasurement != null && llMeasurement.tagCount > 0 && omegaRps < 2.0 && Robot.getInstance().m_Vision.tempDisable == false) {
         m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose,
             Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
       }
