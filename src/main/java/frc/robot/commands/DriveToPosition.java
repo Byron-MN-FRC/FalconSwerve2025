@@ -4,10 +4,14 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -53,7 +57,7 @@ public class DriveToPosition extends Command {
         yController.setTolerance(0.0);
         omegaController.setTolerance(Units.degreesToRadians(1));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        magnitudeController.setTolerance(0.01);
+        magnitudeController.setTolerance(0.001);
 
         addRequirements(drivetrain);
     }
@@ -154,14 +158,28 @@ public class DriveToPosition extends Command {
             SmartDashboard.putNumber("ySpeed", ySpeed);
             SmartDashboard.putNumber("xSpeed", xSpeed);
 
+        Optional<Alliance> ally = DriverStation.getAlliance();
 
-
-        drivetrain.setControl(
-            Robot.getInstance().drive
+            if (ally.get() == Alliance.Blue) {
+                drivetrain.setControl(
+                Robot.getInstance().drive
+                .withVelocityX(xSpeedFromPolar * MaxSpeed)
+                .withVelocityY(ySpeedFromPolar * MaxSpeed)
+                .withRotationalRate(omegaSpeed * MaxAngularRate)
+                );
+            } else {
+                drivetrain.setControl(
+                Robot.getInstance().drive
                 .withVelocityX(-xSpeedFromPolar * MaxSpeed)
                 .withVelocityY(-ySpeedFromPolar * MaxSpeed)
                 .withRotationalRate(omegaSpeed * MaxAngularRate)
-        );
+                );
+            }
+
+
+
+
+        
         
         // drivetrain.setControl(
         //     Robot.getInstance().drive
