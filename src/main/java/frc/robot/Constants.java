@@ -12,19 +12,11 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Inches;
 
-import java.security.PublicKey;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -191,5 +183,10 @@ public class Constants {
         // public static final int Pipe2 = 1;
 
         public static final Pose2d ReefTagOffset = new Pose2d(0, Units.inchesToMeters(24), new Rotation2d(Math.PI));
+    }
+
+    public static final class AlignmentConstants{
+        public static final Distance RIGHT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(1); //enter as inches
+        public static final Distance LEFT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(2); //enter as inches
     }
 }

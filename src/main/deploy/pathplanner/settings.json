@@ -14,7 +14,7 @@
   "robotMass": 33.5658,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
-  "driveWheelRadius": 0.04572,
+  "driveWheelRadius": 0.046736,
   "driveGearing": 6.746,
   "maxDriveSpeed": 4.73,
   "driveMotorType": "falcon500",

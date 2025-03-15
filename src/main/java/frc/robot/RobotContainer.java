@@ -41,6 +41,7 @@ import frc.robot.commands.ZeroElevator;
 import frc.robot.commands.ZeroShoulder;
 import frc.robot.commands.ZeroWrist;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AlignmentSubsystem;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -55,6 +56,7 @@ public class RobotContainer {
         public final Wrist m_wrist = new Wrist();
         public final Elevator m_elevator = new Elevator();
         public final Vision m_Vision = new Vision();
+        public final AlignmentSubsystem m_AlignmentSubsystem = new AlignmentSubsystem();
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
         //  private CANdi wristAndClawCandi;

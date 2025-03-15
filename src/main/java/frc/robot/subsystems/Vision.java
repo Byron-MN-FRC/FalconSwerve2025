@@ -24,7 +24,7 @@ public class Vision extends SubsystemBase {
     }
 
     public Vision() {
-        LimelightHelpers.setCameraPose_RobotSpace(_limelightName, 0.0275, -0.29845, 0.36195, 0, 0, 0);
+        LimelightHelpers.setCameraPose_RobotSpace(_limelightName, 0.0275, -0.29845, 0.29, 0, 0, 0);
     }
 
     @Override
