@@ -104,59 +104,57 @@ public class DriveToPosition extends Command {
     @Override
     public void execute() {
 
-            //update polar coords
-            double currentR = drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation());
-            double distCxGx = goalPose.getTranslation().getX() - drivetrain.getState().Pose.getTranslation().getX();
-            if (goalPose.getY() < drivetrain.getState().Pose.getY()) {
-                angle = -1.0 * Math.acos(distCxGx / currentR);
-                System.out.println("angle is odd");
-                
-            } else {
-                angle = Math.acos(distCxGx / currentR);
-                System.out.println("angle is normal");
-                
-            }
-                                    
-            // Drive
-            xController.setGoal(goalPose.getX());
-            yController.setGoal(goalPose.getY());
-            omegaController.setGoal(goalPose.getRotation().getRadians());
-            magnitudeController.setGoal(0);
-
-            // Drive to the target
-            double xSpeed = xController.calculate(drivetrain.getState().Pose.getX());
-            if (xController.atGoal()) {
-                xSpeed = 0;
-            }
-
-            double ySpeed = yController.calculate(drivetrain.getState().Pose.getY());
-            if (yController.atGoal()) {
-                ySpeed = 0;
-            }
-
-            var omegaSpeed = omegaController.calculate(drivetrain.getState().Pose.getRotation().getRadians());
-            if (omegaController.atGoal()) {
-                omegaSpeed = 0;
-            }
-
-            var combinedSpeed = magnitudeController.calculate(currentR);
-                
-            double xSpeedFromPolar = -1 * Math.cos(angle) * combinedSpeed;
-            double ySpeedFromPolar = -1 * Math.sin(angle) * combinedSpeed;
+        //update polar coords
+        double currentR = drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation());
+        double distCxGx = goalPose.getTranslation().getX() - drivetrain.getState().Pose.getTranslation().getX();
+        if (goalPose.getY() < drivetrain.getState().Pose.getY()) {
+            angle = -1.0 * Math.acos(distCxGx / currentR);
             
-            if (magnitudeController.atGoal()) {
-                xSpeedFromPolar = 0;
-                ySpeedFromPolar = 0;
-            }
+        } else {
+            angle = Math.acos(distCxGx / currentR);
+            
+        }
+                                
+        // Drive
+        xController.setGoal(goalPose.getX());
+        yController.setGoal(goalPose.getY());
+        omegaController.setGoal(goalPose.getRotation().getRadians());
+        magnitudeController.setGoal(0);
 
-            SmartDashboard.putNumber("combinedSpeed", combinedSpeed);
-            SmartDashboard.putNumber("xSpeedFromPolar", xSpeedFromPolar);
-            SmartDashboard.putNumber("ySpeedFromPolar", ySpeedFromPolar);
-            SmartDashboard.putNumber("angleRJIEOFOS", angle * (180/Math.PI));
-            SmartDashboard.putNumber("cR", currentR);
-            SmartDashboard.putNumber("dCXGX", distCxGx);
-            SmartDashboard.putNumber("ySpeed", ySpeed);
-            SmartDashboard.putNumber("xSpeed", xSpeed);
+        // Drive to the target
+        double xSpeed = xController.calculate(drivetrain.getState().Pose.getX());
+        if (xController.atGoal()) {
+            xSpeed = 0;
+        }
+
+        double ySpeed = yController.calculate(drivetrain.getState().Pose.getY());
+        if (yController.atGoal()) {
+            ySpeed = 0;
+        }
+
+        var omegaSpeed = omegaController.calculate(drivetrain.getState().Pose.getRotation().getRadians());
+        if (omegaController.atGoal()) {
+            omegaSpeed = 0;
+        }
+
+        var combinedSpeed = magnitudeController.calculate(currentR);
+            
+        double xSpeedFromPolar = -1 * Math.cos(angle) * combinedSpeed;
+        double ySpeedFromPolar = -1 * Math.sin(angle) * combinedSpeed;
+        
+        if (magnitudeController.atGoal()) {
+            xSpeedFromPolar = 0;
+            ySpeedFromPolar = 0;
+        }
+
+        SmartDashboard.putNumber("combinedSpeed", combinedSpeed);
+        SmartDashboard.putNumber("xSpeedFromPolar", xSpeedFromPolar);
+        SmartDashboard.putNumber("ySpeedFromPolar", ySpeedFromPolar);
+        SmartDashboard.putNumber("angleRJIEOFOS", angle * (180/Math.PI));
+        SmartDashboard.putNumber("cR", currentR);
+        SmartDashboard.putNumber("dCXGX", distCxGx);
+        SmartDashboard.putNumber("ySpeed", ySpeed);
+        SmartDashboard.putNumber("xSpeed", xSpeed);
 
         Optional<Alliance> ally = DriverStation.getAlliance();
 
@@ -174,12 +172,7 @@ public class DriveToPosition extends Command {
                 .withVelocityY(-ySpeedFromPolar * MaxSpeed)
                 .withRotationalRate(omegaSpeed * MaxAngularRate)
                 );
-            }
-
-
-
-
-        
+            }        
         
         // drivetrain.setControl(
         //     Robot.getInstance().drive
@@ -187,20 +180,6 @@ public class DriveToPosition extends Command {
         //         .withVelocityY(-ySpeed * MaxSpeed)
         //         .withRotationalRate(omegaSpeed * MaxAngularRate)
         // );
-
-        // System.out.println("Last Taget: " + lastTarget);
-        // System.out.println();
-
-        // System.out.println("Goal Pose X: " + goalPose.getX());
-        // System.out.println("Goal Pose Y: " + goalPose.getY());
-        // System.out.println("Goal Pose R: " + goalPose.getRotation());
-        // System.out.println();
-        
-        // System.out.println("X Speed: " + xSpeed);
-        // System.out.println("Y Speed: " + ySpeed);
-        // System.out.println("R Speed: " + omegaSpeed);
-        // System.out.println();
-        // System.out.println("this also works");
     }
 
     // Called once the command ends or is interrupted.

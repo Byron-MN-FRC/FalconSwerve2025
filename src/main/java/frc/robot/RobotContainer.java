@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.commands.AlignRotationallyWithWall;
 import frc.robot.commands.AutonGrabCoral;
 import frc.robot.commands.AutonPlaceCoral;
 import frc.robot.commands.ClawDrop;
@@ -202,7 +203,7 @@ public class RobotContainer {
         joystick.y().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andThen(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())));
 
-
+        joystick.x().whileTrue(new AlignRotationallyWithWall(drivetrain, m_AlignmentSubsystem));
 
         //Op Test Buttons TODO Reassign
         joystick.b().whileTrue(

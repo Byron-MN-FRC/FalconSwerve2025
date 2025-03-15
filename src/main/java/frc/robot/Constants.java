@@ -186,7 +186,7 @@ public class Constants {
     }
 
     public static final class AlignmentConstants{
-        public static final Distance RIGHT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(1); //enter as inches
-        public static final Distance LEFT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(2); //enter as inches
+        public static final Distance RIGHT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(9); //enter as inches
+        public static final Distance LEFT_CANRANGE_DISTANCE_FROM_CENTER = Inches.of(-9); //enter as inches
     }
 }
