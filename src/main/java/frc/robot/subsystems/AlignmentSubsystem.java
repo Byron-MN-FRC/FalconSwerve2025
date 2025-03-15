@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Degrees;
+
 import static frc.robot.Constants.AlignmentConstants.LEFT_CANRANGE_DISTANCE_FROM_CENTER;
 import static frc.robot.Constants.AlignmentConstants.RIGHT_CANRANGE_DISTANCE_FROM_CENTER;
 
@@ -34,7 +36,8 @@ public class AlignmentSubsystem extends SubsystemBase {
   public AlignmentSubsystem() {
     var canRangeConfig = new CANrangeConfiguration();
     canRangeConfig.ToFParams.withUpdateMode(UpdateModeValue.LongRangeUserFreq);
-
+    canRangeConfig.FovParams.withFOVRangeX(6.75);
+    canRangeConfig.FovParams.withFOVRangeY(6.75);
     leftCanRange.getConfigurator().apply(canRangeConfig);
     rightCanRange.getConfigurator().apply(canRangeConfig);
   }
@@ -42,6 +45,8 @@ public class AlignmentSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       SmartDashboard.putNumber("Left Range", getLeftDistance().in(Inches));
+      SmartDashboard.putNumber("Right Range", getRightDistance().in(Inches));
+      SmartDashboard.putNumber("Relative Angle", getRelativeAngle().in(Degrees));
     }
 
   /**
