@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     // m_robotContainer = new RobotContainer();
+    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.limeLightName);
     HttpCamera frontCam = new HttpCamera("FrontCam", "http://10.48.59.11:5800");
     CameraServer.addCamera(frontCam);
     HttpCamera backCam = new HttpCamera("BackCam", "http://10.48.59.12:5800");
@@ -94,6 +96,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
   }
 
   @Override
@@ -110,6 +113,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.limeLightName);
+
   }
 
   @Override

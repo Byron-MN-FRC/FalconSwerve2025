@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.function.Consumer;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -104,6 +106,11 @@ public class RobotContainer {
         // shoulderAndTopCandi = new CANdi(31, "rio");
 
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
+        autoChooser.onChange(new Consumer<Command>() {
+            public void accept(Command t) {
+                m_Vision.updateAutoStartPosition(autoChooser.getSelected().getName());
+            };
+        });
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // SmartDashboard Commands
@@ -138,6 +145,7 @@ public class RobotContainer {
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
         SmartDashboard.putData("Target Robot Position", targetPoseField);
+        
 
         // selector spots
         Constants.Selector.PlacementSelector.initializeTab();
