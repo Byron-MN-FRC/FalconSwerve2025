@@ -49,8 +49,6 @@ public class SelectPlacement extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        // System.out.println("---BEFORE---");
-        // Constants.PlacementSelector.printArray();
         Constants.Selector.PlacementSelector.move(m_Selection);
     }
 

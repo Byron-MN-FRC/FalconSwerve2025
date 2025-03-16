@@ -11,15 +11,13 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shoulder;
-import frc.robot.subsystems.Wrist;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ZeroAll extends SequentialCommandGroup {
   /** Creates a new Store. */
-  public ZeroAll(Shoulder m_shoulder, Elevator m_elevator, Wrist m_wrist, Claw m_claw) {
+  public ZeroAll(Shoulder m_shoulder, Elevator m_elevator, Claw m_claw) {
     // Add Commands here:
     addCommands(
-        new ZeroWrist(m_wrist),
         new ZeroElevator(m_elevator),
         new ZeroShoulder(m_shoulder),
         // new InstantCommand(() -> m_claw.zero()),

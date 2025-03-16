@@ -107,9 +107,7 @@ public class Constants {
             public static void printArray() {
                 for (boolean[] row : array) {
                     for (boolean element : row) {
-                        System.out.print(element + " ");
                     }
-                    System.out.println();
                 }
             }
         
@@ -170,22 +168,13 @@ public class Constants {
         //
     }
 
-    public static final class WristConstants {
-            public static final double wristMotorGearRatio = 251.52; //X input rotations for each output rotation
-        
-            // public static final double rotationVerticalAlligned = wristMotorGearRatio * 0.25; // quarter of a rotation on the output shaft
-            public static final double rotationVerticalAlligned = 54;
-            public static final double rotationHorizontalAlligned = 0;
-            public static final double tolerance = wristMotorGearRatio / (360.0 * 2.0); // 1/2 degree on the output mechanism
-
-    }
 
     public static final class ClawConstants {
         public static final double VOLTS_TO_DIST = 2.55;
     }
 
     public static final class VisionConstants {
-        public static final String limeLightName = "limelight-milkbot";
+        public static final String limeLightName = "limelight-front";
         public static final String limeLightName2 = "limelight-back";
         public static final int aprilPipe = 0;
         // public static final int Pipe2 = 1;

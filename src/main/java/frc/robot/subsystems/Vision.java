@@ -17,14 +17,14 @@ public class Vision extends SubsystemBase {
     private static final Vision m_Vision = new Vision();
     public boolean tempDisable = false;
     private double timestampToReEnable;
-    private String _limelightName = Constants.VisionConstants.limeLightName;
 
     public static Vision getInstance() {
         return m_Vision;
     }
 
     public Vision() {
-        LimelightHelpers.setCameraPose_RobotSpace(_limelightName, 0.0275, -0.29845, 0.36195, 0, 0, 0);
+        LimelightHelpers.setCameraPose_RobotSpace(Constants.VisionConstants.limeLightName, 0, -0.27845, 0.36195, 0, 0, 0);
+        LimelightHelpers.setCameraPose_RobotSpace(Constants.VisionConstants.limeLightName2, -0.065, -0.27845, 0.36195, 0, 15, 180);
     }
 
     @Override

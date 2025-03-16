@@ -39,7 +39,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putBoolean("Stage 2", m_robotContainer.getTopStage2());
     SmartDashboard.putBoolean("Coral", m_robotContainer.getCoralDetect());
-    SmartDashboard.putBoolean("Wrist Zero", m_robotContainer.getWristTripped());
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for
@@ -74,7 +73,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     // Robot.getInstance().m_elevator.stopBothMotors();
     // Robot.getInstance().m_shoulder.stopShoulder();
-    // Robot.getInstance().m_wrist.stopMotor();
     // Robot.getInstance().m_claw.zero();
   }
 
