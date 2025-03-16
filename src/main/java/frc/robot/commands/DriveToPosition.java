@@ -95,7 +95,6 @@ public class DriveToPosition extends Command {
         yController.reset(drivetrain.getState().Pose.getY());
         xController.reset(drivetrain.getState().Pose.getX());
         magnitudeController.reset(drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation()));
-        System.out.println("yo this works");
         
         Robot.getInstance().targetPoseField.setRobotPose(goalPose);
     }
@@ -109,11 +108,9 @@ public class DriveToPosition extends Command {
             double distCxGx = goalPose.getTranslation().getX() - drivetrain.getState().Pose.getTranslation().getX();
             if (goalPose.getY() < drivetrain.getState().Pose.getY()) {
                 angle = -1.0 * Math.acos(distCxGx / currentR);
-                System.out.println("angle is odd");
                 
             } else {
                 angle = Math.acos(distCxGx / currentR);
-                System.out.println("angle is normal");
                 
             }
                                     
@@ -176,31 +173,6 @@ public class DriveToPosition extends Command {
                 );
             }
 
-
-
-
-        
-        
-        // drivetrain.setControl(
-        //     Robot.getInstance().drive
-        //         .withVelocityX(-xSpeed * MaxSpeed)
-        //         .withVelocityY(-ySpeed * MaxSpeed)
-        //         .withRotationalRate(omegaSpeed * MaxAngularRate)
-        // );
-
-        // System.out.println("Last Taget: " + lastTarget);
-        // System.out.println();
-
-        // System.out.println("Goal Pose X: " + goalPose.getX());
-        // System.out.println("Goal Pose Y: " + goalPose.getY());
-        // System.out.println("Goal Pose R: " + goalPose.getRotation());
-        // System.out.println();
-        
-        // System.out.println("X Speed: " + xSpeed);
-        // System.out.println("Y Speed: " + ySpeed);
-        // System.out.println("R Speed: " + omegaSpeed);
-        // System.out.println();
-        // System.out.println("this also works");
     }
 
     // Called once the command ends or is interrupted.

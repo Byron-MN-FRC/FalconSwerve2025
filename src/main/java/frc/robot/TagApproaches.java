@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.TagApproach.gameTarget;
 
 public class TagApproaches {
-    public AprilTagFieldLayout FieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+    public AprilTagFieldLayout FieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     private TagApproach[] tagArray;
 
     private static TagApproaches _TagApproaches = new TagApproaches();
@@ -215,13 +215,10 @@ public class TagApproaches {
 
         if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
             offset = .175;
-            System.out.println("moving left");
         } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
             offset = -.175;
-            System.out.println("moving right");
         } else {
             offset = 0;
-            System.out.println("staying in the center");
             
         }
 

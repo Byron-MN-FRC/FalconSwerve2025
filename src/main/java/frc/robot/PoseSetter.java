@@ -18,42 +18,36 @@ public class PoseSetter {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					1.5,
 					10,
-					Constants.WristConstants.rotationHorizontalAlligned
 			});
 
 			put("L2", new double[] {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					Constants.ElevatorConstants.stage2UpperLimit,
 					10,
-					Constants.WristConstants.rotationVerticalAlligned
 			});
 
 			put("L3", new double[] {
 					1.25,
 					Constants.ElevatorConstants.stage2UpperLimit,
 					10,
-					Constants.WristConstants.rotationVerticalAlligned
 			});
 
 			put("L4", new double[] {
 					Constants.ElevatorConstants.stage1UpperLimit,
 					Constants.ElevatorConstants.stage2UpperLimit,
 					6,
-					Constants.WristConstants.rotationVerticalAlligned
 			});
 
 			put(Feeder, new double[] {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					1.5,
 					3,
-					Constants.WristConstants.rotationVerticalAlligned
 			});
 
 			put(Zero, new double[] {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					Constants.ElevatorConstants.stage2UpperLimit,
 					Constants.ShoulderConstants.shoulderLowerLimit,
-					Constants.WristConstants.rotationHorizontalAlligned
 
 			});
 
@@ -61,7 +55,6 @@ public class PoseSetter {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					1.5,
 					1,
-					Constants.WristConstants.rotationHorizontalAlligned
 
 			});
 
@@ -69,7 +62,6 @@ public class PoseSetter {
 					Constants.ElevatorConstants.stage1LowerLimit,
 					Constants.ElevatorConstants.stage2UpperLimit,
 					Constants.ShoulderConstants.shoulderUpperLimit,
-					Constants.WristConstants.rotationHorizontalAlligned
 
 			});
 
@@ -77,7 +69,6 @@ public class PoseSetter {
 					-1.25,
 					Constants.ElevatorConstants.stage2LowerLimit,
 					Constants.ShoulderConstants.shoulderUpperLimit,
-					Constants.WristConstants.rotationHorizontalAlligned
 			});
 
 		}

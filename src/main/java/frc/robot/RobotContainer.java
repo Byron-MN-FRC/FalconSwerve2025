@@ -39,20 +39,17 @@ import frc.robot.commands.StorePreMatch;
 import frc.robot.commands.ZeroAll;
 import frc.robot.commands.ZeroElevator;
 import frc.robot.commands.ZeroShoulder;
-import frc.robot.commands.ZeroWrist;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
     // Subsystems
         public final Claw m_claw = new Claw();
         public final Shoulder m_shoulder = new Shoulder();
-        public final Wrist m_wrist = new Wrist();
         public final Elevator m_elevator = new Elevator();
         public final Vision m_Vision = new Vision();
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -95,8 +92,8 @@ public class RobotContainer {
     
     public RobotContainer() {
         
-        NamedCommands.registerCommand("AutonPlaceCoral", new AutonPlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw));
-        NamedCommands.registerCommand("AutonGrabCoral", new AutonGrabCoral(m_shoulder, m_elevator, m_wrist, m_claw));
+        NamedCommands.registerCommand("AutonPlaceCoral", new AutonPlaceCoral(m_shoulder, m_elevator, m_claw));
+        NamedCommands.registerCommand("AutonGrabCoral", new AutonGrabCoral(m_shoulder, m_elevator, m_claw));
 
         // wristAndClawCandi = new CANdi(30, "rio");
         // shoulderAndTopCandi = new CANdi(31, "rio");
@@ -104,18 +101,16 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        // SmartDashboard Commands
-        // SmartDashboard.putData("AutonGrabCoral", new InstantCommand(() -> command).andThen(new Command()));
-        // SmartDashboard.putData("AutonPlaceCoral", new InstantCommand(() -> command).andThen(new Command()));
+        
         SmartDashboard.putData("ClawDrop", new ClawDrop(m_claw));
         SmartDashboard.putData("ClawIntake", new ClawIntake(m_claw));
         SmartDashboard.putData("Climb", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Climb))
             .andThen(new Climb(m_elevator)));
         SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain));
         SmartDashboard.putData("GrabCoralHigh", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Feeder))
-            .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw)));
+            .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_claw)));
         SmartDashboard.putData("GrabCoralLow", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Ground))
-            .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw)));
+            .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_claw)));
         // SmartDashboard.putData("MoveElevator", new InstantCommand(() -> command)
         //     .andThen(new MoveElevator(m_elevator)));
         // SmartDashboard.putData("MoveShoulder", new InstantCommand(() -> command)
@@ -123,15 +118,14 @@ public class RobotContainer {
         // SmartDashboard.putData("MoveWrist", new InstantCommand(() -> command)
         //     .andThen(new MoveWrist(m_wrist)));
         SmartDashboard.putData("PlaceCoral", new InstantCommand(() -> goalArrangementPlacing())
-            .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw)));
+            .andThen(new PlaceCoral(m_shoulder, m_elevator, m_claw)));
         SmartDashboard.putData("Store", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
-            .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw)));
+            .andThen(new Store(m_shoulder, m_elevator, m_claw)));
         SmartDashboard.putData("StorePreMatch", new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
-            .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw)));
-        SmartDashboard.putData("ZeroAll", new ZeroAll(m_shoulder, m_elevator, m_wrist, m_claw));
+            .andThen(new StorePreMatch(m_shoulder, m_elevator, m_claw)));
+        SmartDashboard.putData("ZeroAll", new ZeroAll(m_shoulder, m_elevator, m_claw));
         SmartDashboard.putData("ZeroElevator", new ZeroElevator(m_elevator));
         SmartDashboard.putData("ZeroShoulder", new ZeroShoulder(m_shoulder));
-        SmartDashboard.putData("ZeroWrist", new ZeroWrist(m_wrist));
 
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
@@ -161,15 +155,10 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-
             drivetrain.applyRequest(() -> drive
                 .withVelocityX(-joystick.getLeftY() * MaxSpeed * percentSlow)
-                    // Drive forward with negative Y (forward)
                 .withVelocityY(-joystick.getLeftX() * MaxSpeed * percentSlow)
-                    // Drive left with negative X (left)
                 .withRotationalRate(-joystick.getRightX() * MaxAngularRate * percentSlow)
-                    // Drive counterclockwise with negative X (left)
         ));
         // generated buttons that drivers will probably never use
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -187,15 +176,15 @@ public class RobotContainer {
 
         // Operator buttons
         joystick.leftTrigger(.5).onTrue(new InstantCommand(() -> goalArrangementPlacing())
-        .andThen(new PlaceCoral(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new PlaceCoral(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         joystick.leftTrigger(.5).onFalse(new ClawDrop(m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         joystick.rightBumper().whileTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Feeder))
-        .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new GrabCoralHigh(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         joystick.rightTrigger(.5).whileTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Ground))
-        .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new GrabCoralLow(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         joystick.y().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andThen(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())));
@@ -228,15 +217,15 @@ public class RobotContainer {
         
         final JoystickButton btnZeroAll = new JoystickButton(accessory, XboxController.Button.kBack.value);
         btnZeroAll.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Zero))
-        .andThen(new ZeroAll(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new ZeroAll(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
         
         final JoystickButton btnStorePreMatch = new JoystickButton(accessory, XboxController.Button.kBack.value);        
         btnStorePreMatch.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
-        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new StorePreMatch(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
         final JoystickButton btnStore = new JoystickButton(accessory, XboxController.Button.kA.value);        
         btnStore.onTrue(new InstantCommand(() -> goalArrangementOthers(PoseSetter.Stored))
-        .andThen(new Store(m_shoulder, m_elevator, m_wrist, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+        .andThen(new Store(m_shoulder, m_elevator, m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
         
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -268,10 +257,8 @@ public class RobotContainer {
         Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[0];
         Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[1];
         Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[2];
-        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(Constants.Selector.PlacementSelector.getLevel())[3];
         goalArrangement = Constants.Selector.PlacementSelector.getLevel();
         SmartDashboard.putString("goal setting", goalArrangement);
-        System.out.println("goal setting is " + goalArrangement);
         return goalArrangement;
     }
 
@@ -279,7 +266,6 @@ public class RobotContainer {
         Robot.getInstance().m_elevator.elevatorStage1Target = PoseSetter.positionsMap.get(position)[0];
         Robot.getInstance().m_elevator.elevatorStage2Target = PoseSetter.positionsMap.get(position)[1];
         Robot.getInstance().m_shoulder.shoulderTarget = PoseSetter.positionsMap.get(position)[2];
-        Robot.getInstance().m_wrist.wristTarget = PoseSetter.positionsMap.get(position)[3];
         goalArrangement = position;
         SmartDashboard.putString("goal setting", goalArrangement);
         return goalArrangement;
@@ -297,10 +283,6 @@ public class RobotContainer {
         return currentArrangement;
     }
     
-    public Boolean getWristTripped() {
-        return false;
-       //return !shoulderAndTopCandi.getS2Closed().getValue();
-      }
       public Boolean getTopStage2() {
         return false;
        // return shoulderAndTopCandi.getS1Closed().getValue();
