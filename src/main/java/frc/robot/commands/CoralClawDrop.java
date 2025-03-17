@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Claw;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClawIntake extends Command {
-private final Claw m_claw;
+public class CoralClawDrop extends Command {
+  private final Claw m_claw;
 
   /** Creates a new ClawDrop. */
-  public ClawIntake(Claw subsystem) {
+  public CoralClawDrop(Claw subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     m_claw = subsystem;
@@ -21,7 +21,9 @@ private final Claw m_claw;
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("coral dropping");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -29,7 +31,9 @@ private final Claw m_claw;
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("coral done dropping");
+  }
 
   // Returns true when the command should end.
   @Override
