@@ -95,7 +95,6 @@ public class DriveToPosition extends Command {
         yController.reset(drivetrain.getState().Pose.getY());
         xController.reset(drivetrain.getState().Pose.getX());
         magnitudeController.reset(drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation()));
-        System.out.println("yo this works");
         
         Robot.getInstance().targetPoseField.setRobotPose(goalPose);
     }
