@@ -25,8 +25,8 @@ public class Vision extends SubsystemBase {
     private String _limelightName = Constants.VisionConstants.limeLightName;
     private Pose2d autoStartPose = new Pose2d();
  //   public Field2d autoPlacement = new Field2d();
-    public int lastTargetFront;
-    public int lastTargetBack;
+    public int lastTargetFront = 1;
+    public int lastTargetBack = 1;
 
     public static Vision getInstance() {
         return m_Vision;
@@ -91,11 +91,15 @@ public class Vision extends SubsystemBase {
 
     public void updateTargetData(String llName) {
         if (LimelightHelpers.getTV(llName)) {
+            int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
+            if (!(fidID >= 1) || !(fidID <= 22)) {
+                    fidID = 1;
+            }
             if (llName == Constants.VisionConstants.limeLightName) {
-                lastTargetFront = ((int)LimelightHelpers.getFiducialID(llName));
+                lastTargetFront = fidID;
             }
             if (llName == Constants.VisionConstants.limeLightName2) {
-                lastTargetBack = ((int)LimelightHelpers.getFiducialID(llName));
+                lastTargetBack = fidID;
             }
         }
     }

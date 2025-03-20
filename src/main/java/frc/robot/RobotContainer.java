@@ -94,6 +94,7 @@ public class RobotContainer {
 
     //TODO reassign
     public int globalCurrNumSelected = 1;
+    public TagApproaches justNeedItLoaded = new TagApproaches();
     
     public RobotContainer() {
         
