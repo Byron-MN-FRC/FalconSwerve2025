@@ -183,6 +183,7 @@ public class Constants {
         // public static final int Pipe2 = 1;
 
         public static final Pose2d ReefTagOffset = new Pose2d(0, Units.inchesToMeters(24), new Rotation2d(Math.PI));
+        public static final Pose2d CoralStationTagOffset = new Pose2d(0, Units.inchesToMeters(24), new Rotation2d());
     }
 
     public static final class AlignmentConstants{

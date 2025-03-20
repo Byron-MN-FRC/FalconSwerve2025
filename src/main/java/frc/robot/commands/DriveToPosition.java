@@ -50,9 +50,9 @@ public class DriveToPosition extends Command {
     //         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     
     
-    public DriveToPosition(CommandSwerveDrivetrain subsystem) {
+    public DriveToPosition(CommandSwerveDrivetrain subsystem, String llName) {
         drivetrain = subsystem;
-
+        _limelightName = llName;
         xController.setTolerance(0.0);
         yController.setTolerance(0.0);
         omegaController.setTolerance(Units.degreesToRadians(1));

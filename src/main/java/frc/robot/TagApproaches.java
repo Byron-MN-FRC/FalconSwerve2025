@@ -27,14 +27,12 @@ public class TagApproaches {
     public TagApproaches() {
         tagArray = new TagApproach[22];
 
-        poseOffsetx = robotWidth * Math.cos(getTagAngle(1));
-        poseOffsety = robotWidth * Math.sin(getTagAngle(1));
-        pose = calcNewPose(1, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(1, 0, 0, 0);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.CoralStationTagOffset);
         tagArray[0] = new TagApproach(1, Alliance.Red, gameTarget.CoralStation, pose);
         
-        poseOffsetx = robotWidth * Math.cos(getTagAngle(2));
-        poseOffsety = robotWidth * Math.sin(getTagAngle(2));
-        pose = calcNewPose(2, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(2, 0, 0, 0);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.CoralStationTagOffset);
         tagArray[1] = new TagApproach(2, Alliance.Red, gameTarget.CoralStation, pose);
         
         pose = calcNewPose(3, 0, -robotWidth, 0);
@@ -76,14 +74,12 @@ public class TagApproaches {
         pose = addTagCentricOffset(pose, Constants.VisionConstants.ReefTagOffset);
         tagArray[10] = new TagApproach(11, Alliance.Red, gameTarget.Reef, pose);
 
-        poseOffsetx = robotWidth * Math.cos(getTagAngle(12));
-        poseOffsety = robotWidth * Math.sin(getTagAngle(12));
-        pose = calcNewPose(12, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(12, 0, 0, 0);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.CoralStationTagOffset);
         tagArray[11] = new TagApproach(12, Alliance.Blue, gameTarget.CoralStation, pose);
 
-        poseOffsetx = robotWidth * Math.cos(getTagAngle(13));
-        poseOffsety = robotWidth * Math.sin(getTagAngle(13));
-        pose = calcNewPose(13, poseOffsetx, poseOffsety, 0);
+        pose = calcNewPose(13, 0, 0, 0);
+        pose = addTagCentricOffset(pose, Constants.VisionConstants.CoralStationTagOffset);
         tagArray[12] = new TagApproach(13, Alliance.Blue, gameTarget.CoralStation, pose);
 
         pose = calcNewPose(14, -robotWidth, 0, 0);

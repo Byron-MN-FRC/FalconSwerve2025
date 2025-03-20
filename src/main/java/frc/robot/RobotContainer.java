@@ -112,7 +112,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // SmartDashboard Commands
-        SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain));
+        // SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain));
 
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
@@ -200,10 +200,10 @@ joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andT
 
 // Op Test Buttons TODO Reassign
 joystick.b().whileTrue(
-new DriveToPosition(drivetrain).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         joystick.x().whileTrue(new AlignRotationallyWithWall(drivetrain, m_AlignmentSubsystem));
-
+joystick.a().whileTrue(new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         // joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
         // joystick.a().onTrue(new InstantCommand(() -> plus()));
 
