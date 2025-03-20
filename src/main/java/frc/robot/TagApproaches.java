@@ -5,6 +5,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.TagApproach.gameTarget;
 
@@ -166,9 +167,12 @@ public class TagApproaches {
         Pose2d goalPose = tagArray[indexInArray].DesiredPos();
 
         if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
-            System.out.println("shifting");
             return shiftReefAllign(goalPose);
         }
+        if (tagArray[indexInArray].GameTarget() == gameTarget.CoralStation){
+            return shiftFeederAllign(goalPose);
+        }
+        
         return goalPose;
     }
 
@@ -229,4 +233,22 @@ public class TagApproaches {
         return new Pose2d(newGoalTranslation, goalAngle);
     }
 
+    public Pose2d shiftFeederAllign(Pose2d goalBeforeShift) {
+        double offset = 0;
+
+        if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
+            offset = Units.inchesToMeters(25.75);
+        } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
+            offset = Units.inchesToMeters(25.75) * -1;
+        } else {
+            offset = 0;            
+        }
+
+        Rotation2d goalAngle = goalBeforeShift.getRotation();
+        Translation2d oldTranslation = goalBeforeShift.getTranslation();
+        Translation2d offsetTranslation = new Translation2d(offset, goalAngle.plus(Rotation2d.fromDegrees(90)));
+        Translation2d newGoalTranslation = oldTranslation.plus(offsetTranslation);
+
+        return new Pose2d(newGoalTranslation, goalAngle);
+    }
 }

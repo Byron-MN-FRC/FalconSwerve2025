@@ -1,19 +1,16 @@
 package frc.robot.subsystems;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.FlippingUtil;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-
-import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -28,6 +25,8 @@ public class Vision extends SubsystemBase {
     private String _limelightName = Constants.VisionConstants.limeLightName;
     private Pose2d autoStartPose = new Pose2d();
  //   public Field2d autoPlacement = new Field2d();
+    public int lastTargetFront;
+    public int lastTargetBack;
 
     public static Vision getInstance() {
         return m_Vision;
@@ -39,11 +38,17 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        updateTargetData(Constants.VisionConstants.limeLightName);
+        updateTargetData(Constants.VisionConstants.limeLightName2);
+
+        SmartDashboard.putNumber("lasttargetfront", lastTargetFront);
+        SmartDashboard.putNumber("lasttargetback", lastTargetBack);
         if (timestampToReEnable < Utils.getCurrentTimeSeconds() && tempDisable == true){
             tempDisable = false;
-            
         }
-        SmartDashboard.putBoolean("tempDisable", tempDisable);
+
+        // SmartDashboard.putBoolean("tempDisable", tempDisable);
         //SmartDashboard.putData("Auton Placement Field", autoPlacement);
         //   autoPlacement.setRobotPose(autoStartPose);
         //System.out.println("placementPosition: " + autoStartPose);
@@ -72,6 +77,7 @@ public class Vision extends SubsystemBase {
                 LimelightHelpers.setLEDMode_ForceOff(_limelightName);
             }
         }
+
     }
 
     public Alliance MyAlliance() {
@@ -83,26 +89,24 @@ public class Vision extends SubsystemBase {
         }
     }
 
-    // public boolean AllianceTargetAquired() {
-        // boolean targetAquired = LimelightHelpers.getTV(_limelightName);
-        // if (targetAquired) {
-        //     int targetID = (int) LimelightHelpers.getFiducialID(_limelightName);
-        //     if ((targetID >= 0) && (targetID <= 16))
-        //         return (MyAlliance() == _tagApproches.TagAlliance(targetID));
-        //     else
-        //         return false;
-        // }
-        // return false;
-    // }
+    public void updateTargetData(String llName) {
+        if (LimelightHelpers.getTV(llName)) {
+            if (llName == Constants.VisionConstants.limeLightName) {
+                lastTargetFront = ((int)LimelightHelpers.getFiducialID(llName));
+            }
+            if (llName == Constants.VisionConstants.limeLightName2) {
+                lastTargetBack = ((int)LimelightHelpers.getFiducialID(llName));
+            }
+        }
+    }
 
     public void tempDisable(double seconds) {
         tempDisable = true;
         double currentTime = Utils.getCurrentTimeSeconds();
         timestampToReEnable = currentTime + seconds;
-        
     }
 
-        public void updateAutoStartPosition(String autoName) {
+    public void updateAutoStartPosition(String autoName) {
         // Instant Command is the name of the "None" Auto
         if (!autoName.equals("InstantCommand")) {
             try {
