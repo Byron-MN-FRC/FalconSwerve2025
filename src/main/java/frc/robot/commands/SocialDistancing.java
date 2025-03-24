@@ -21,102 +21,92 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AlignmentSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class AlignRotationallyWithWall extends Command {
+public class SocialDistancing extends Command {
     
     private CommandSwerveDrivetrain m_Drivetrain;
-    private AlignmentSubsystem m_groupOfCANRanges;
+    private AlignmentSubsystem m_Range;
 
-    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
-    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    private static final TrapezoidProfile.Constraints FORWARD_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    private static final TrapezoidProfile.Constraints SIDE_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
 
-    private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
-    private final ProfiledPIDController yController = new ProfiledPIDController(2.5, 0, 0, Y_CONSTRAINTS);
+    private final ProfiledPIDController forwardController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
+    private final ProfiledPIDController sideController = new ProfiledPIDController(2.5, 0, 0, Y_CONSTRAINTS);
     private final ProfiledPIDController omegaController = new ProfiledPIDController(3, 0, 0, OMEGA_CONSTRAINTS);
     
-    private Translation2d goalTranslation;
+    private Pose2d goalPose;
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+
+    public final SwerveRequest.RobotCentric driveRobotCentric = new SwerveRequest.RobotCentric()
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     
-    public AlignRotationallyWithWall (CommandSwerveDrivetrain drivetrain, AlignmentSubsystem alignmentSubsystem) {
+    public AlignRotationallyWithWall (CommandSwerveDrivetrain drivetrain, AlignmentSubsystem alignmentSubsystem, Pose2d acquiredTarget) {
          xController.setTolerance(0.0);
         yController.setTolerance(0.0);
         omegaController.setTolerance(Units.degreesToRadians(0.1));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
         m_Drivetrain = drivetrain;
         m_groupOfCANRanges = alignmentSubsystem;
+        goalPose = acquiredTarget;
         addRequirements(drivetrain, alignmentSubsystem);
     }
 
     
     @Override
     public void initialize() {
-        SmartDashboard.putBoolean("aligning", true);
-
-        goalTranslation = Robot.getInstance().drivetrain.getState().Pose.getTranslation();
-
-        omegaController.reset(m_groupOfCANRanges.getRelativeAngle().in(Radians));
-        yController.reset(m_Drivetrain.getState().Pose.getY());
-        xController.reset(m_Drivetrain.getState().Pose.getX());
-        
+        forwardController.reset(m_Range.getDistance().in(Units.inches));
+        sideController.reset(0);
+        omegaController.reset(m_drivetrain.getState().Pose.getRotation().getRadians());
     }
 
     @Override
     public void execute() {
                                     
         // Drive
-        xController.setGoal(goalTranslation.getX());
-        yController.setGoal(goalTranslation.getY());
-        omegaController.setGoal(0);
+        forwardController.setGoal(12);
+        sideController.setGoal(0);
+        omegaController.setGoal(goalPose.getRotation().getRadians());
 
         // Drive to the target
-        double xSpeed = xController.calculate(m_Drivetrain.getState().Pose.getX());
-        if (xController.atGoal()) {
-            xSpeed = 0;
+        double forwardSpeed = forwardController.calculate(m_Range.getDistance().in(Units.inches));
+        if (forwardController.atGoal()) {
+            forwardSpeed = 0;
         }
 
-        double ySpeed = yController.calculate(m_Drivetrain.getState().Pose.getY());
-        if (yController.atGoal()) {
-            ySpeed = 0;
+        double sideSpeed = sideController.calculate(0);
+        if (sideController.atGoal()) {
+            sideSpeed = 0;
         }
 
-        double omegaSpeed = omegaController.calculate(m_groupOfCANRanges.getRelativeAngle().in(Radians));
+        double omegaSpeed = omegaController.calculate(m_drivetrain.getState().Pose.getRotation().getRadians());
         if (omegaController.atGoal()) {
             omegaSpeed = 0;
         }
-
-        // SmartDashboard.putNumber("ySpeed", ySpeed);
-        // SmartDashboard.putNumber("xSpeed", xSpeed);
-        SmartDashboard.putNumber("omegaTurnySpeed", omegaSpeed);
 
         Optional<Alliance> ally = DriverStation.getAlliance();
 
             if (ally.get() == Alliance.Blue) {
                 m_Drivetrain.setControl(
-                Robot.getInstance().drive
-                // .withVelocityX(xSpeed * MaxSpeed)
-                // .withVelocityY(ySpeed * MaxSpeed)
-                .withVelocityX(0)
+                driveRobotCentric
+                .withVelocityX(forwardSpeed * MaxAngularRate)
                 .withVelocityY(0)
-                .withRotationalRate(-omegaSpeed * MaxAngularRate)
+                .withRotationalRate(omegaSpeed * MaxAngularRate)
                 );
             } else {
                 m_Drivetrain.setControl(
-                Robot.getInstance().drive
-                // .withVelocityX(-xSpeed * MaxSpeed)
-                // .withVelocityY(-ySpeed * MaxSpeed)
-                .withVelocityX(0)
+                driveRobotCentric
+                .withVelocityX(forwardSpeed * MaxAngularRate)
                 .withVelocityY(0)
-                .withRotationalRate(-omegaSpeed * MaxAngularRate)
+                .withRotationalRate(omegaSpeed * MaxAngularRate)
                 );
             }        
-
     }
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("aligning", false);
     }
     
     @Override
