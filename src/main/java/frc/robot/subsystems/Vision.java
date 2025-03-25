@@ -91,14 +91,14 @@ public class Vision extends SubsystemBase {
 
     public void updateTargetData(String llName) {
         if (LimelightHelpers.getTV(llName)) {
-            int fidID = (int) LimelightHelpers.getFiducialID(_limelightName);
+            int fidID = (int) LimelightHelpers.getFiducialID(llName);
             if (!(fidID >= 1) || !(fidID <= 22)) {
                     fidID = 1;
             }
-            if (llName == Constants.VisionConstants.limeLightName) {
+            if (llName.equals(Constants.VisionConstants.limeLightName)) {
                 lastTargetFront = fidID;
             }
-            if (llName == Constants.VisionConstants.limeLightName2) {
+            if (llName.equals(Constants.VisionConstants.limeLightName2)) {
                 lastTargetBack = fidID;
             }
         }

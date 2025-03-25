@@ -16,6 +16,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,19 +28,19 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.AlgaeClawDrop;
-import frc.robot.commands.AlignRotationallyWithWall;
 import frc.robot.commands.AutonGrabCoral;
 import frc.robot.commands.AutonPlaceCoral;
 import frc.robot.commands.Climb;
 import frc.robot.commands.CoralClawDrop;
 import frc.robot.commands.CoralClawIntake;
+import frc.robot.commands.DriveToFeeder;
 import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.GrabAlgae;
 import frc.robot.commands.GrabCoral;
-import frc.robot.commands.MoveElevator;
 import frc.robot.commands.PlaceAlgae;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.SelectPlacement;
+import frc.robot.commands.SocialDistancing;
 import frc.robot.commands.Store;
 import frc.robot.commands.ZeroAll;
 import frc.robot.generated.TunerConstants;
@@ -203,8 +204,9 @@ joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andT
 joystick.b().whileTrue(
 new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        joystick.x().whileTrue(new SocialDistancing(drivetrain, m_AlignmentSubsystem));
+        joystick.x().whileTrue(new SocialDistancing(drivetrain, m_AlignmentSubsystem, new Rotation2d(-90)));
 joystick.a().whileTrue(new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+// joystick.a().whileTrue(new DriveToFeeder(drivetrain, Constants.VisionConstants.limeLightName2, m_AlignmentSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
         // joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
         // joystick.a().onTrue(new InstantCommand(() -> plus()));
 

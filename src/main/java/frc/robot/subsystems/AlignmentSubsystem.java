@@ -1,19 +1,14 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Millimeter;
 
-import static frc.robot.Constants.AlignmentConstants.LEFT_CANRANGE_DISTANCE_FROM_CENTER;
-import static frc.robot.Constants.AlignmentConstants.RIGHT_CANRANGE_DISTANCE_FROM_CENTER;
-
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.signals.UpdateModeValue;
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,31 +18,53 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class AlignmentSubsystem extends SubsystemBase {
 
-  private final CANrange rearCanRange = new CANrange(40, "rio");
-  private final StatusSignal<Distance> rearDistanceSignal = rearCanRange.getDistance();
+  private Rev2mDistanceSensor distSensor = new Rev2mDistanceSensor(Port.kMXP);
+  CANrange d = new CANrange(1);
 
   /**
    * Constructs a new AlignmentSubsystem
    */
   public AlignmentSubsystem() {
-    var canRangeConfig = new CANrangeConfiguration();
-    canRangeConfig.ToFParams.withUpdateMode(UpdateModeValue.LongRangeUserFreq);
-    canRangeConfig.FovParams.withFOVRangeX(6.75);
-    canRangeConfig.FovParams.withFOVRangeY(6.75);
-    rearCanRange.getConfigurator().apply(canRangeConfig);
+    distSensor.setAutomaticMode(true);
+    distSensor.setDistanceUnits(Unit.kMillimeters);
+    distSensor.setRangeProfile(RangeProfile.kDefault);
   }
 
     @Override
     public void periodic() {
-      SmartDashboard.putNumber("Rear Range", getRearDistance().in(Inches));
+      SmartDashboard.putNumber("Range", getDistance());
     }
 
-  /**
-   * Gets the distance detected by the sensor
-   * 
-   * @return distance detected by the sensor
-   */
-  public Distance getRearDistance() {
-    return rearDistanceSignal.refresh().getValue();
-  }
+    public double getDistance() {
+      return distSensor.GetRange() / 1000;
+    }
+
+  // /**
+  //  * Gets the relative angle of the drivetrain to the reef. Positive angle means the robot needs to turn clockwise.
+  //  * 
+  //  * @return relative angle of the drivetrain to the reef
+  //  */
+  // public Angle getRelativeAngle() {
+  //   Distance leftDistance = getLeftDistance();
+  //   Distance rightDistance = getRightDistance();
+
+  //   return Radians.of(
+  //       Math.atan2(
+  //           rightDistance.minus(leftDistance).in(Inches),
+  //             Math.abs(LEFT_CANRANGE_DISTANCE_FROM_CENTER.minus(RIGHT_CANRANGE_DISTANCE_FROM_CENTER).in(Inches))));
+  // }
+
+  // /**
+  //  * Gets the distance from the center of the front robot on the plane of the CANRanges to the reef perpendicular to the
+  //  * reef.
+  //  * 
+  //  * @return Distance to the reef perpendicular to the reef
+  //  */
+  // public Distance getDistance() {
+  //   Distance rightDistance = getRightDistance();
+  //   Angle relativeAngle = getRelativeAngle();
+  //   Distance normalizedRightDistance = rightDistance.times(Math.cos(relativeAngle.in(Radians)));
+  //   return normalizedRightDistance.plus(RIGHT_CANRANGE_DISTANCE_FROM_CENTER.times(Math.sin(relativeAngle.in(Radians))));
+  // }
+
 }

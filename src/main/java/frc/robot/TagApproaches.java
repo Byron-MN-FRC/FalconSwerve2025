@@ -237,9 +237,9 @@ public class TagApproaches {
         double offset = 0;
 
         if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
-            offset = Units.inchesToMeters(25.75);
-        } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
             offset = Units.inchesToMeters(25.75) * -1;
+        } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
+            offset = Units.inchesToMeters(25.75);
         } else {
             offset = 0;            
         }
