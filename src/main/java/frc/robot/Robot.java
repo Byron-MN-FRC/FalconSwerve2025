@@ -9,6 +9,7 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +31,7 @@ public class Robot extends TimedRobot {
     CameraServer.addCamera(frontCam);
     HttpCamera backCam = new HttpCamera("BackCam", "http://10.48.59.12:5800");
     CameraServer.addCamera(backCam);
+    DriverStation.silenceJoystickConnectionWarning(true);
   }
 
   public static RobotContainer getInstance() {

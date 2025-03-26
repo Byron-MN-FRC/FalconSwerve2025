@@ -29,7 +29,7 @@ public class DriveToFeeder extends SequentialCommandGroup {
 
         addCommands(
               new DriveToPosition(drivetrain, llname),
-              new SocialDistancing(drivetrain, align, new Rotation2d(0))
+              new SocialDistancing(drivetrain, align)
         );
         
     }

@@ -29,8 +29,8 @@ public class DriveToPosition extends Command {
     private static final TrapezoidProfile.Constraints Magnitude_Constraints = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
     
-    private final ProfiledPIDController magnitudeController = new ProfiledPIDController(2.5, 0, 0, Magnitude_Constraints);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(3, 0, .1, OMEGA_CONSTRAINTS);
+    private final ProfiledPIDController magnitudeController = new ProfiledPIDController(2.75, 0, 0, Magnitude_Constraints);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(5, 0, .1, OMEGA_CONSTRAINTS);
     
     private String _limelightName = Constants.VisionConstants.limeLightName;
     private final CommandSwerveDrivetrain drivetrain;
@@ -43,9 +43,9 @@ public class DriveToPosition extends Command {
     public DriveToPosition(CommandSwerveDrivetrain subsystem, String llName) {
         drivetrain = subsystem;
         _limelightName = llName;
-        omegaController.setTolerance(Units.degreesToRadians(1));
+        omegaController.setTolerance(Units.degreesToRadians(1.5));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
-        magnitudeController.setTolerance(0.001);
+        magnitudeController.setTolerance(0.05);
 
         addRequirements(drivetrain);
     }
@@ -73,7 +73,8 @@ public class DriveToPosition extends Command {
     // // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+        System.out.println("rot" + omegaController.atGoal());
+        System.out.println("mag" + magnitudeController.atGoal());
         //update polar coords
         double currentR = drivetrain.getState().Pose.getTranslation().getDistance(goalPose.getTranslation());
         double distCxGx = goalPose.getTranslation().getX() - drivetrain.getState().Pose.getTranslation().getX();
@@ -140,7 +141,7 @@ public class DriveToPosition extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return magnitudeController.atGoal() && omegaController.atGoal();
     }
 
     @Override

@@ -204,11 +204,10 @@ joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andT
 joystick.b().whileTrue(
 new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        joystick.x().whileTrue(new SocialDistancing(drivetrain, m_AlignmentSubsystem, new Rotation2d(-90)));
-joystick.a().whileTrue(new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-// joystick.a().whileTrue(new DriveToFeeder(drivetrain, Constants.VisionConstants.limeLightName2, m_AlignmentSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        // joystick.leftBumper().onTrue(new InstantCommand(() -> minus()));
-        // joystick.a().onTrue(new InstantCommand(() -> plus()));
+        joystick.x().whileTrue(new SocialDistancing(drivetrain, m_AlignmentSubsystem));
+// joystick.a().whileTrue(new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+joystick.a().whileTrue(new DriveToFeeder(drivetrain, Constants.VisionConstants.limeLightName2, m_AlignmentSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
 
 
 // Accessory buttons

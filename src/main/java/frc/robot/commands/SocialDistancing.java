@@ -29,31 +29,26 @@ public class SocialDistancing extends Command {
 
     private static final TrapezoidProfile.Constraints FORWARD_CONSTRAINTS = new TrapezoidProfile.Constraints(2, 1);
 
-    private final ProfiledPIDController forwardController = new ProfiledPIDController(2.0, 0, 0, FORWARD_CONSTRAINTS);
+    private final ProfiledPIDController forwardController = new ProfiledPIDController(2.5, 0.01, 0, FORWARD_CONSTRAINTS);
     
-    private Rotation2d goalPose;
-
-
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
 
     public final SwerveRequest.RobotCentric driveRobotCentric = new SwerveRequest.RobotCentric()
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     
-    public SocialDistancing (CommandSwerveDrivetrain drivetrain, AlignmentSubsystem alignmentSubsystem, Rotation2d acquiredTarget) {
-        forwardController.setTolerance(0.005);
+    public SocialDistancing (CommandSwerveDrivetrain drivetrain, AlignmentSubsystem alignmentSubsystem) {
+        forwardController.setTolerance(0.003);
         m_drivetrain = drivetrain;
         m_distSensor = alignmentSubsystem;
-        goalPose = acquiredTarget;
         addRequirements(drivetrain, alignmentSubsystem);
     }
 
-    
     @Override
     public void initialize() {
         forwardController.reset(m_distSensor.getDistance());
-        // m_drivetrain.getState().Pose.getRotation().getRadians(); get current rotation
+        System.out.println("starting");
     }
 
     @Override
@@ -63,16 +58,13 @@ public class SocialDistancing extends Command {
         forwardController.setGoal(0.305);
         // needs to be 12" away on reef
 
-        // double forwardSpeed = forwardController.calculate(m_distSensor.getDistance() - forwardController.getGoal().position);
-        // // Drive to the target
-        // if (forwardSpeed < 0) {
-        //     if(forwardSpeed > -0.1) forwardSpeed = -0.1;
-        // } else {
-        //     if (forwardSpeed < 0.1) forwardSpeed = 0.1;
-        // }
+        double forwardSpeed;
 
-        double forwardSpeed = forwardController.calculate(m_distSensor.getDistance());
-
+        if (m_distSensor.getDistance() >= 0) {
+            forwardSpeed = forwardController.calculate(m_distSensor.getDistance());
+        } else {
+            forwardSpeed = 0;
+        }
 
         SmartDashboard.putNumber("forward speed", forwardSpeed);
         SmartDashboard.putNumber("distance from goal", m_distSensor.getDistance());
@@ -80,23 +72,12 @@ public class SocialDistancing extends Command {
             forwardSpeed = 0;
         }
 
-        Optional<Alliance> ally = DriverStation.getAlliance();
-
-            if (ally.get() == Alliance.Blue) {
-                m_drivetrain.setControl(
-                driveRobotCentric
+        m_drivetrain.setControl(
+            driveRobotCentric
                 .withVelocityX(forwardSpeed * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond))
                 .withVelocityY(0)
                 .withRotationalRate(0)
-                );
-            } else {
-                m_drivetrain.setControl(
-                driveRobotCentric
-                .withVelocityX(forwardSpeed * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond))
-                .withVelocityY(0)
-                .withRotationalRate(0)
-                );
-            }        
+        );
     }
 
     @Override
@@ -105,7 +86,7 @@ public class SocialDistancing extends Command {
     
     @Override
     public boolean isFinished() {
-        return forwardController.atGoal();
+        return false;
     }
     
 }
