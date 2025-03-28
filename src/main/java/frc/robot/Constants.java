@@ -182,6 +182,9 @@ public class Constants {
         public static final int aprilPipe = 0;
         // public static final int Pipe2 = 1;
 
+        public static final double fieldWidth = 8.052;
+        public static final double fieldLength = 17.548;
+
         public static final Pose2d ReefTagOffset = new Pose2d(0, Units.inchesToMeters(17.25), new Rotation2d(Math.PI));
         public static final Pose2d CoralStationTagOffset = new Pose2d(0, Units.inchesToMeters(27), new Rotation2d());
     }

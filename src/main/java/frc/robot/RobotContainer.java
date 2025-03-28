@@ -114,7 +114,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // SmartDashboard Commands
-        // SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain));
+        SmartDashboard.putData("DriveToPosition", new DriveToPosition(drivetrain, Constants.VisionConstants.limeLightName));
 
         // Field Widgets
         SmartDashboard.putData("Current Robot Position", field);
