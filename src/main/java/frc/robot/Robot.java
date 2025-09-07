@@ -37,8 +37,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("Stage 2", m_robotContainer.getTopStage2());
-    SmartDashboard.putBoolean("Coral", m_robotContainer.getCoralDetect());
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for

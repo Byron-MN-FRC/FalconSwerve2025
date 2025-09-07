@@ -169,10 +169,10 @@ public class TagApproaches {
         
         Pose2d goalPose = tagArray[indexInArray].DesiredPos();
 
-        if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
-            System.out.println("shifting");
-            return shiftReefAllign(goalPose);
-        }
+        // if (tagArray[indexInArray].GameTarget() == gameTarget.Reef){ 
+        //     System.out.println("shifting");
+        //     return shiftReefAllign(goalPose);
+        // }
         return goalPose;
     }
 
@@ -210,24 +210,24 @@ public class TagApproaches {
         return newPose;
     }
 
-    public Pose2d shiftReefAllign(Pose2d goalBeforeShift) {
-        double offset = 0;
+    // public Pose2d shiftReefAllign(Pose2d goalBeforeShift) {
+    //     double offset = 0;
 
-        if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
-            offset = .175;
-        } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
-            offset = -.175;
-        } else {
-            offset = 0;
+    //     if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.left) {
+    //         offset = .175;
+    //     } else if (Constants.Selector.PlacementSelector.getScoringPose() == Constants.Selector.PlacementSelector.right) {
+    //         offset = -.175;
+    //     } else {
+    //         offset = 0;
             
-        }
+    //     }
 
-        Rotation2d goalAngle = goalBeforeShift.getRotation();
-        Translation2d oldTranslation = goalBeforeShift.getTranslation();
-        Translation2d offsetTranslation = new Translation2d(offset, goalAngle.plus(Rotation2d.fromDegrees(90)));
-        Translation2d newGoalTranslation = oldTranslation.plus(offsetTranslation);
+    //     Rotation2d goalAngle = goalBeforeShift.getRotation();
+    //     Translation2d oldTranslation = goalBeforeShift.getTranslation();
+    //     Translation2d offsetTranslation = new Translation2d(offset, goalAngle.plus(Rotation2d.fromDegrees(90)));
+    //     Translation2d newGoalTranslation = oldTranslation.plus(offsetTranslation);
 
-        return new Pose2d(newGoalTranslation, goalAngle);
-    }
+    //     return new Pose2d(newGoalTranslation, goalAngle);
+    // }
 
 }
