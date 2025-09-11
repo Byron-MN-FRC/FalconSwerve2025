@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DropCoral;
+import frc.robot.commands.UndropCoral;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -66,7 +67,7 @@ public class RobotContainer {
     
     public RobotContainer() {
         
-        autoChooser = AutoBuilder.buildAutoChooser("Autonomous Command");
+        autoChooser = AutoBuilder.buildAutoChooser("Drop");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // Field Widgets
@@ -115,6 +116,8 @@ public class RobotContainer {
         joystick.y().onTrue(new InstantCommand(() -> slow()));
         joystick.start().onTrue(new InstantCommand(() -> m_Vision.tempDisable(0.5)).andThen(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())));
         joystick.leftTrigger().whileTrue(new DropCoral(m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        joystick.rightTrigger().whileTrue(new UndropCoral(m_claw).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
 
 
         //Op Test Buttons TODO Reassign

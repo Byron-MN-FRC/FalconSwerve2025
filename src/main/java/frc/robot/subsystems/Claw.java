@@ -6,11 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
   
   private WPI_TalonSRX releaseMotor;
+  private XboxController joystick = new XboxController(0);
   
   /** Creates a new Claw. */
   public Claw() {
@@ -20,11 +22,24 @@ public class Claw extends SubsystemBase {
   }
 
   public void startMotor() {
-    releaseMotor.set(.5);
+    if (joystick.getRightBumperButton()) {
+      releaseMotor.set(joystick.getLeftTriggerAxis());
+    } else {
+      releaseMotor.set(.5);
+    }
+    
   }
 
   public void reverseMotor() {
-    releaseMotor.set(-0.5);
+    if (joystick.getRightBumperButton()) {
+      releaseMotor.set(-joystick.getRightTriggerAxis());
+    } else {
+      releaseMotor.set(-.5);
+    }
+  }
+
+  public void reverseMotorAnalog() {
+    releaseMotor.set(joystick.getRightTriggerAxis());
   }
   
   public void stopMotor() {
