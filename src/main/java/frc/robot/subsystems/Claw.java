@@ -25,7 +25,7 @@ public class Claw extends SubsystemBase {
     if (joystick.getRightBumperButton()) {
       releaseMotor.set(joystick.getLeftTriggerAxis());
     } else {
-      releaseMotor.set(.5);
+      releaseMotor.set(75);
     }
     
   }
