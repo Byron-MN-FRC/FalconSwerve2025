@@ -3,7 +3,7 @@
   "robotLength": 0.908,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "GND"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
@@ -14,7 +14,7 @@
   "robotMass": 33.5658,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
-  "driveWheelRadius": 0.04572,
+  "driveWheelRadius": 0.046736,
   "driveGearing": 6.746,
   "maxDriveSpeed": 4.73,
   "driveMotorType": "falcon500",
@@ -30,7 +30,5 @@
   "brModuleY": -0.3048,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": [
-    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.0},\"size\":{\"width\":1.5875,\"length\":1.587},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
-  ]
+  "robotFeatures": []
 }
